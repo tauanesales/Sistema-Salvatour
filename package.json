@@ -1,7 +1,7 @@
 {
-  "name": "matc84-laboratorio-de-programacao-web",
-  "version": "1.0.0",
-  "description": "- [About](#about)\r - [Versions](#versions)\r - [Authors](#authors)\r - [Languages](#languages)",
+  "name": "back-matc84-laboratorio-de-programacao-web",
+  "version": "0.1.0",
+  "description": "Projeto MATC84",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
