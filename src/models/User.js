@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const UserSchema = mongoose.Schema({
     name: {
@@ -13,11 +13,8 @@ const UserSchema = mongoose.Schema({
     password: {
         type:String,
         required: true
-    },
-    isAdmin: {
-        type:Boolean
     }
 });
 
 const User = mongoose.model('User', UserSchema);
-module.exports = User;
+export default User;

@@ -1,5 +1,5 @@
-const userService = require('../services/user.service');
-const mongoose = require('mongoose');
+import userService from '../services/user.service.js';
+import mongoose from 'mongoose';
 
 const create = async (req, res) => {
     const requiredFields = ['name', 'email', 'password'];
@@ -40,6 +40,6 @@ const findByEmail = async (req, res) => {
     }
     
     res.status(200).json(user);
-
 }
-module.exports = { create, findByEmail };
+
+export default { create, findByEmail };
