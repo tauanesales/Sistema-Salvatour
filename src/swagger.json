@@ -54,16 +54,16 @@
                 }
             }
         },
-        "/user/{email}":{
+        "/user/{id}":{
             "get": {
-                "summary": "Busca um usuário pelo email",
-                "description": "Busca um usuário pelo email",
-                "operationId": "getUserByEmail",
+                "summary": "Busca um usuário pelo ID",
+                "description": "Busca um usuário pelo ID",
+                "operationId": "getUserById",
                 "parameters": [
                     {
-                        "name": "email",
+                        "name": "ID",
                         "in": "path",
-                        "description": "Email do usuário",
+                        "description": "Id do usuário",
                         "required": true,
                         "schema": {
                             "type": "string"
