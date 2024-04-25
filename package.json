@@ -1,6 +1,7 @@
 {
   "name": "back-matc84-laboratorio-de-programacao-web",
   "version": "0.2.0",
+  "type": "module",
   "description": "Projeto MATC84",
   "main": "app.js",
   "scripts": {
@@ -15,7 +16,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.2.3"
+    "mongoose": "^8.2.3",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

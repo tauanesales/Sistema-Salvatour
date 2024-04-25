@@ -1,6 +1,7 @@
-const route = require('express').Router();
-const userController = require('../controller/user.controller');
+import express from 'express';
+import userController from '../controller/user.controller.js';
+const route = express.Router();
 route.post('/', userController.create);
 route.get('/:email', userController.findByEmail);
 
-module.exports = route;
+export default route;

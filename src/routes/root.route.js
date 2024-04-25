@@ -1,7 +1,8 @@
-const route = require('express').Router();
+import express from 'express';
+const route = express.Router();
 
 route.get('/', (req, res) => {
     res.send('Hello World! It works!')
   })
 
-module.exports = route;
+export default route;

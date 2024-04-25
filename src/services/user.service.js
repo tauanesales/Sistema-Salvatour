@@ -1,10 +1,10 @@
-const User = require('../models/User');
+import User from "../models/User.js";
 
 const create = (body) => User.create(body);
 
 const findByEmail = (email) => User.findOne({ email });
 
-module.exports = {
+export default {
     create,
-    findByEmail,
+    findByEmail
 };

@@ -1,5 +1,7 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const connect = async () => {
     const dbUser = process.env.DB_USER;
@@ -13,4 +15,4 @@ const connect = async () => {
     }
 }
 
-module.exports = { connect };
+export default {connect};
