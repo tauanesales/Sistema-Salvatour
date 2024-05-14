@@ -2,6 +2,8 @@ import User from "../models/User.js";
 
 const create = (body) => User.create(body);
 
+const findAll = () => User.find();
+
 const findByIdService = (id) => User.findOne({ id });
 
 const updateService = (
@@ -17,6 +19,7 @@ const updateService = (
 
 export default {
     create,
+    findAll,
     findByIdService,
     updateService
 };
