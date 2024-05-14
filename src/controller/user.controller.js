@@ -38,8 +38,6 @@ const findAll = async (req, res) => {
       error: error.message,
     });
   }
-
-  
 };
 
 const findById = async (req, res) => {
@@ -71,23 +69,16 @@ const update = async (req, res) => {
   }
 };
 
-const deleteUserById = async (requestingUserId, userIdToDelete) => {
+const deleteUserById = async (req, res) => {
     try {
-      const requestingUser = await User.findById(requestingUserId);
-      
-      if (!requestingUser.isAdmin) {
-        throw new Error('The user does not have permission to delete other users.');
-      }
-      const userToDelete = await User.findByIdAndDelete(userIdToDelete);
+      const requestingUserId = req.body.id;
+      const userIdToDelete = req.params.id;
   
-      if (!userToDelete) {
-        throw new Error('User not found');
-      }
-  
-      return { message: 'User successfully deleted.' };
+      const result = await userService.deleteUserById(requestingUserId, userIdToDelete);
+      res.status(200).json(result);
     } catch (error) {
-      throw new Error(`Error deleting user: ${error.message}`);
+      return res.status(500).json({ error: error.message });
     }
   };
-  
+
 export default { create, findAll, findById, update, deleteUserById };

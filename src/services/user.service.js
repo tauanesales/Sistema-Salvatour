@@ -6,15 +6,23 @@ const findAll = () => User.find();
 
 const findByIdService = (id) => User.findOne({ id });
 
-const deleteUserById = async (req, res) => {
+const deleteUserById = async (requestingUserId, userIdToDelete) => {
     try {
-      const requestingUserId = req.user._id;
-      const userIdToDelete = req.params.id;
+      const requestingUser = await User.findById(requestingUserId);
+      
+      if (!requestingUser.isAdmin) {
+        throw new Error('Usuário não tem permissão para excluir outros usuários');
+      }
   
-      const result = await UserService.deleteUserById(requestingUserId, userIdToDelete);
-      res.status(200).json(result);
+      const userToDelete = await User.findByIdAndDelete(userIdToDelete);
+  
+      if (!userToDelete) {
+        throw new Error('Usuário não encontrado');
+      }
+  
+      return { message: 'Usuário deletado com sucesso' };
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      throw new Error(`Erro ao excluir usuário: ${error.message}`);
     }
   };
 
