@@ -17,6 +17,15 @@ const create = async (req, res) => {
     });
 };
 
+const findAll = async(req, res) =>{
+    const users = await userService.findAll();
+
+    if(users.length === 0){
+        return res.status(400).json({ error: 'There are no registered users' });
+    }
+    res.json(users);
+}
+
 const findById = async (req, res) => {
     const user = req.user;
     res.status(200).json(user);
@@ -28,7 +37,6 @@ const update = async(req, res) =>{
         return res.status(400).json({ error: 'Please add at least one of the fields: name, email, password' });
     }
     const id = req.id;
-    const user = req.user;
 
     await userService.updateService(
         id,
@@ -38,4 +46,4 @@ const update = async(req, res) =>{
     );
     res.json({message: 'User successfully updated!'});
 };
-export default { create, findById, update };
+export default { create, findAll,findById, update};
