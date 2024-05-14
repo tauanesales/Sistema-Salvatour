@@ -76,7 +76,7 @@ const deleteUserById = async (requestingUserId, userIdToDelete) => {
       const requestingUser = await User.findById(requestingUserId);
       
       if (!requestingUser.isAdmin) {
-        throw new Error('Usuário não tem permissão para excluir outros usuários');
+        throw new Error('The user does not have permission to delete other users.');
       }
       const userToDelete = await User.findByIdAndDelete(userIdToDelete);
   
@@ -84,9 +84,9 @@ const deleteUserById = async (requestingUserId, userIdToDelete) => {
         throw new Error('User not found');
       }
   
-      return { message: 'Usuário deletado com sucesso' };
+      return { message: 'User successfully deleted.' };
     } catch (error) {
-      throw new Error(`Erro ao excluir usuário: ${error.message}`);
+      throw new Error(`Error deleting user: ${error.message}`);
     }
   };
   
