@@ -3,9 +3,9 @@ import express from "express";
 import userRoute from "./src/routes/user.route.js";
 import rootRoute from "./src/routes/root.route.js";
 import swaggerRoute from "./src/routes/swagger/swagger.route.js";
+import cors from "cors"
 
 const app = express();
-var cors = require('cors');
 
 const corsOpts = {
     origin: '*',
