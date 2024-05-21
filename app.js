@@ -7,6 +7,9 @@ import cors from 'cors';
 import swaggerRoute from "./src/routes/swagger/swagger.route.js"
 const app = express();
 
+db.connect();
+
+
 const corsOpts = {
     origin: '*',
   
@@ -30,7 +33,6 @@ app.use("/auth", loginRoute);
 app.use("/", rootRoute);
 app.use("/docs", swaggerRoute);
 
-db.connect();
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => { });
