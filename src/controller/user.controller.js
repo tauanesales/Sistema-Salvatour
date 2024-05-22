@@ -26,23 +26,10 @@ const create = async (req, res) => {
   }
 };
 
-const findAll = async (req, res) => {
-  try {
-    const users = await userService.findAll();
-    if (users.length === 0) {
-        return res.status(400).json({ error: "There are no registered users" });
-      }
-      res.json(users);
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
 const findById = async (req, res) => {
   try {
-    const user = req.user;
+    const id = req.id;
+    const user = await userService.findByIdService(id);
     res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({
@@ -59,7 +46,7 @@ const update = async (req, res) => {
         error: "Please add at least one of the fields: name, email, password",
       });
     }
-    const id = req.id;
+    const id = req.params.id;
     await userService.updateService(id, name, email, password);
     res.json({ message: "User successfully updated!" });
   } catch (error) {
@@ -69,16 +56,15 @@ const update = async (req, res) => {
   }
 };
 
-const deleteUserById = async (req, res) => {
-    try {
-      const requestingUserId = req.body.id;
-      const userIdToDelete = req.params.id;
-  
-      const result = await userService.deleteUserById(requestingUserId, userIdToDelete);
-      res.status(200).json(result);
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  };
+const deleteUser = async (req, res) => {
+  try {
+    const userIdToDelete = req.params.id;
 
-export default { create, findAll, findById, update, deleteUserById };
+    const result = await userService.deleteUser(userIdToDelete);
+    res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export default { create, findById, update, deleteUser };
