@@ -20,5 +20,3 @@ export const validToken = (req, res, next) => {
       next();
     });
   };
-
-// module.exports = validToken
