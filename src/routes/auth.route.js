@@ -5,6 +5,6 @@ const app = express();
 app.use(cors());
 const route = express.Router();
 
-route.post('/login', authController.authenticate);
+route.post('/', authController.authenticate);
 
 export default route;
