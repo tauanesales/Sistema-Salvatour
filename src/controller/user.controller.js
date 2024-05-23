@@ -96,5 +96,24 @@ const verifyToken = (req, res) => {
   }
 };
 
+const modifyPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-export default { create, findById, update, deleteUser, checkMail, verifyToken };
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 8 characters" });
+    }
+
+    await userService.updatePasswordService(email, password);
+    return res.json({ message: "User successfully updated!"});
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+export default { create, findById, update, 
+  deleteUser, checkMail, verifyToken, modifyPassword };
