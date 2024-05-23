@@ -2,14 +2,14 @@ const tokens = {};
 
 let tokenTime = null;
 
-function gerarToken() {
+function generateToken() {
     const token = Math.floor(100000 + Math.random() * 900000); 
     tokenTime = Date.now(); 
     tokens[0] = token;
     return token.toString();
 }
 
-function verificarToken(token) {
+function verifyToken(token) {
     const storedToken = tokens[0]; 
     
     if (storedToken !== parseInt(token)) {
@@ -29,6 +29,6 @@ function verificarToken(token) {
 
 
 export default {
-    gerarToken,
-    verificarToken
+    generateToken,
+    verifyToken
 };
