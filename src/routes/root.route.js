@@ -1,6 +1,4 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
-import User from '../models/User.js'; 
 import {validToken} from "../middlewares/jwt.token.middleware.js";
 const route = express.Router();
 
