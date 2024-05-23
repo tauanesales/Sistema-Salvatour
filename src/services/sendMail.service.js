@@ -15,7 +15,7 @@ const sendMailService = (email) => {
     },
   });
 
-  const token = tokenService.gerarToken();
+  const token = tokenService.generateToken();
 
   const tokenHtml = token
     .split("")
