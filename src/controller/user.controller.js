@@ -5,7 +5,7 @@ import tokenService from "../services/token.service.js";
 
 const create = async (req, res) => {
   try {
-    const requiredFields = ["name", "email", "password"];
+    const requiredFields = ["name", "email", "password", "cityAndState"];
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({ error: `Please add the field ${field}` });
