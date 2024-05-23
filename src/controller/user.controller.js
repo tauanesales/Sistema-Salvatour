@@ -79,4 +79,22 @@ const checkMail = async (req, res) => {
   }
 };
 
-export default { create, findById, update, deleteUser, checkMail };
+const verifyToken = (req, res) => {
+  try {
+    const token = parseInt(req.params.token, 10);
+    const result = tokenService.verifyToken(token);
+
+    if (!result.valid) {
+      return res.status(400).json({ message: result.message });
+    }
+
+    return res.json({ message: "Token is valid" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+
+export default { create, findById, update, deleteUser, checkMail, verifyToken };
