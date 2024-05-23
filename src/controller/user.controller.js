@@ -11,6 +11,11 @@ const create = async (req, res) => {
         return res.status(400).json({ error: `Please add the field ${field}` });
       }
     }
+
+    if (!req.body.isAdmin) {
+      req.body.isAdmin = false; 
+    }
+
     if (req.body.password.length < 8) {
       return res
         .status(400)

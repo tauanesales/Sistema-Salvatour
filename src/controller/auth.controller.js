@@ -26,7 +26,8 @@ const login = async (req, res) => {
 
     const token = generateToken(user.id)
     
-    res.status(200).json({token}, "isAdmin: " + user.isAdmin )
+    res.status(200).json({ token, isAdmin: user.isAdmin });
+
 
 }
 
