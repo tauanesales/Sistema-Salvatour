@@ -4,6 +4,8 @@ const create = (body) => User.create(body);
 
 const findByIdService = (id) => User.findOne({ _id: id });
 
+const findByEmailService = (email) => User.findOne({ email });
+
 const deleteUser = (id) => User.findByIdAndDelete(id);
 
 const updateService = (id, name, email, password) =>
@@ -21,4 +23,5 @@ export default {
   findByIdService,
   updateService,
   deleteUser,
+  findByEmailService
 };
