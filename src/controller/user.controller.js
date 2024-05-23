@@ -67,4 +67,16 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { create, findById, update, deleteUser };
+const checkMail = async (req, res) => {
+  try {
+    const user = await userService.findByEmailService(req.body.email);
+    sendMailService.sendMailService(user.email);
+    return res.json({ message: "email sent successfully" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+export default { create, findById, update, deleteUser, checkMail };
