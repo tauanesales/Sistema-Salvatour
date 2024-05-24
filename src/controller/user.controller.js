@@ -1,11 +1,16 @@
 import userService from "../services/user.service.js";
 import sendMailService from "../services/sendMail.service.js";
 import tokenService from "../services/token.service.js";
-
+import bcrypt from 'bcrypt';
 
 const create = async (req, res) => {
   try {
+
     const requiredFields = ["name", "email", "password", "cityAndState"];
+
+    const { name, email, password, cityAndState } = req.body;
+
+
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({ error: `Please add the field ${field}` });
@@ -21,7 +26,17 @@ const create = async (req, res) => {
         .status(400)
         .json({ error: "Password must be at least 8 characters" });
     }
-    const user = await userService.create(req.body);
+    const salt = await bcrypt.genSalt(10);
+
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await userService.create({
+    name,
+    email,
+    password: hashedPassword,
+    cityAndState,
+    });
+
 
     res.status(201).json({
       message: "User created",
@@ -55,7 +70,15 @@ const update = async (req, res) => {
       });
     }
     const id = req.params.id;
-    await userService.updateService(id, name, email, password);
+
+    let hashedPassword;
+    if (password) {
+      const saltRounds =  await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+    }
+    const salt = await bcrypt.genSalt(10);
+
+    await userService.updateService(id, name, email, hashedPassword);
     res.json({ message: "User successfully updated!" });
   } catch (error) {
     return res.status(500).json({

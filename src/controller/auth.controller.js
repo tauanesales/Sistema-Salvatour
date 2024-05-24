@@ -1,5 +1,5 @@
 import {loginService, generateToken} from '../services/auth.service.js';
-
+import bcrypt from 'bcrypt';
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -20,7 +20,8 @@ const login = async (req, res) => {
          return res.status(404).json({ error: 'User not found' });
     }
 
-    if (user.password != req.body.password) {
+    const verifyPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!verifyPassword) {
         return res.status(404).json({ error: 'Invalid password' });
     }
 
