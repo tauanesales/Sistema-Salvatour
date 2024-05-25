@@ -1,38 +1,4 @@
 import userService from "../services/user.service.js";
-import sendMailService from "../services/sendMail.service.js";
-import tokenService from "../services/token.service.js";
-
-
-const create = async (req, res) => {
-  try {
-    const requiredFields = ["name", "email", "password", "cityAndState"];
-    for (const field of requiredFields) {
-      if (!req.body[field]) {
-        return res.status(400).json({ error: `Please add the field ${field}` });
-      }
-    }
-
-    if (!req.body.isAdmin) {
-      req.body.isAdmin = false; 
-    }
-
-    if (req.body.password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 8 characters" });
-    }
-    const user = await userService.create(req.body);
-
-    res.status(201).json({
-      message: "User created",
-      id: user._id,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
 
 const findById = async (req, res) => {
   try {
@@ -53,6 +19,15 @@ const update = async (req, res) => {
       return res.status(400).json({
         error: "Please add at least one of the fields: name, email, password",
       });
+    }
+
+    if (!userService.validatePassword(password)) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
+        });
     }
     const id = req.params.id;
     await userService.updateService(id, name, email, password);
@@ -75,53 +50,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const checkMail = async (req, res) => {
-  try {
-    const user = await userService.findByEmailService(req.body.email);
-    sendMailService.sendMailService(user.email);
-    return res.json({ message: "email sent successfully" });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-const verifyToken = (req, res) => {
-  try {
-    const token = parseInt(req.params.token, 10);
-    const result = tokenService.verifyToken(token);
-
-    if (!result.valid) {
-      return res.status(400).json({ message: result.message });
-    }
-
-    return res.json({ message: "Token is valid" });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-const modifyPassword = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 8 characters" });
-    }
-
-    await userService.updatePasswordService(email, password);
-    return res.json({ message: "User successfully updated!"});
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-export default { create, findById, update, 
-  deleteUser, checkMail, verifyToken, modifyPassword };
+export default { findById, update, deleteUser };
