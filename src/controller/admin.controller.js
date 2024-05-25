@@ -20,7 +20,7 @@ const updateAdmin = async (req, res) => {
     const { name, email, password, city, state } = req.body;
     if (!name && !email && !password && !city && !state ) {
       return res.status(400).json({
-        error: "Please add at least one of the fields: name, email, password",
+        error: "Please add at least one of the fields: name, email, password, city, state",
       });
     }
     const id = req.params.id;
