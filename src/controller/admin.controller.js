@@ -17,14 +17,14 @@ const findAll = async (req, res) => {
 
 const updateAdmin = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name && !email && !password) {
+    const { name, email, password, city, state } = req.body;
+    if (!name && !email && !password && !city && !state ) {
       return res.status(400).json({
         error: "Please add at least one of the fields: name, email, password",
       });
     }
     const id = req.params.id;
-    await userService.updateService(id, name, email, password);
+    await userService.updateService(id, name, email, password, city, state);
     res.json({ message: "User successfully updated!" });
   } catch (error) {
     return res.status(500).json({
