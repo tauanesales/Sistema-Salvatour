@@ -12,6 +12,11 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: true,
+        select: false   
+    },
+    cityAndState: {
+        type: String,
         required: true   
     },
     isAdmin: {
