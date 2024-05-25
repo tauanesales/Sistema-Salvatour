@@ -14,48 +14,12 @@ const findById = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    if (!name && !email && !password) {
-      return res.status(400).json({
-        error: "Please add at least one of the fields: name, email, password",
-      });
-    }
-
-    if (!userService.validatePassword(password)) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
-        });
-    }
-    const id = req.params.id;
-
-    //let "hashed Password";
-    let hashedPassword = password;
-    if (password) {
-      const salt =  await bcrypt.genSalt(10);
-      hashedPassword = await bcrypt.hash(password, salt);
-      
-    }
-
-    await userService.updateService(id, name, email, hashedPassword);
-    res.json({ message: "User successfully updated!" });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
 const updateLoggedUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name && !email && !password) {
+    const { name, email, password, city, state } = req.body;
+    if (!name && !email && !password && !city && !state) {
       return res.status(400).json({
-        error: "Please add at least one of the fields: name, email, password",
+        error: "Please add at least one of the fields: name, email, password, city, state",
       });
     }
     let token = req.headers.authorization;
@@ -69,7 +33,7 @@ const updateLoggedUser = async (req, res) => {
       hashedPassword = await bcrypt.hash(password, salt);
       
     }
-    await userService.updateService(userId, name, email, hashedPassword);
+    await userService.updateService(userId, name, email, hashedPassword, city, state);
     res.json({ message: "User successfully updated!" });
   } catch (error) {
     return res.status(500).json({
@@ -92,4 +56,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { findById, update, deleteUser, updateLoggedUser };
+export default { findById, deleteUser, updateLoggedUser };
