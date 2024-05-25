@@ -2,7 +2,6 @@ import adminService from "../services/admin.service.js";
 import userService from "../services/user.service.js";
 
 import jwt from'jsonwebtoken'
-
 const findAll = async (req, res) => {
   try {
     const users = await adminService.findAll();
@@ -29,7 +28,13 @@ const updateAdmin = async (req, res) => {
       });
     }
     const id = req.params.id;
-    await userService.updateService(id, name, email, password, city, state);
+    let hashedPassword = password;
+    if (password) {
+      const salt =  await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+      
+    }
+    await userService.updateService(id, name, email, hashedPassword, city, state);
     res.json({ message: "User successfully updated!" });
   } catch (error) {
     return res.status(500).json({
