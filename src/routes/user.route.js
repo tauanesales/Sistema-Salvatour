@@ -8,7 +8,8 @@ const route = express.Router();
 route.post('/', userController.create);
 route.get('/:id', validId, validUser, userController.findById);
 route.patch("/:id", validId, validUser, userController.update);
-route.delete('/:id', userController.deleteUser);
+route.patch("/", validToken, userController.updateLoggedUser);
+route.delete('/', validToken, userController.deleteUser);
 
 // route.get('/', validToken, userController.findAll);
 // route.get('/:id', validId, validUser, validToken, userController.findById);
