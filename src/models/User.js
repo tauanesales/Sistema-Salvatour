@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        select: false   
+        select: true   
     },
     cityAndState: {
         type: String,
