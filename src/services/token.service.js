@@ -19,7 +19,7 @@ function verifyToken(token) {
     const currentTime = Date.now();
     const elapsedTime = (currentTime - tokenTime) / 1000 / 60;
 
-    if (elapsedTime > 1) {
+    if (elapsedTime > 5) {
         delete tokens[0]; 
         return { valid: false, message: "Expired token!" };
     } else {
