@@ -14,8 +14,7 @@ const updateService = (id, name, email, password) =>
     {
       name,
       email,
-      password,
-      isAdmin
+      password
     }
   );
 
