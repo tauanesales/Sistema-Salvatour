@@ -71,12 +71,13 @@ const update = async (req, res) => {
     }
     const id = req.params.id;
 
-    let hashedPassword;
+    //let "hashed Password";
+    let hashedPassword = password;
     if (password) {
-      const saltRounds =  await bcrypt.genSalt(10);
-      hashedPassword = await bcrypt.hash(password, saltRounds);
+      const salt =  await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+      
     }
-    const salt = await bcrypt.genSalt(10);
 
     await userService.updateService(id, name, email, hashedPassword);
     res.json({ message: "User successfully updated!" });
@@ -137,7 +138,13 @@ const modifyPassword = async (req, res) => {
         .json({ error: "Password must be at least 8 characters" });
     }
 
-    await userService.updatePasswordService(email, password);
+    let hashedPassword = password;
+    if (password) {
+      const salt =  await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
+
+    await userService.updatePasswordService(email, hashedPassword);
     return res.json({ message: "User successfully updated!"});
   } catch (error) {
     return res.status(500).json({
