@@ -1,14 +1,21 @@
 import userService from "../services/user.service.js";
+import sendMailService from "../services/sendMail.service.js";
+import tokenService from "../services/token.service.js";
 import jwt from'jsonwebtoken'
 
 const create = async (req, res) => {
   try {
-    const requiredFields = ["name", "email", "password"];
+    const requiredFields = ["name", "email", "password", "cityAndState"];
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({ error: `Please add the field ${field}` });
       }
     }
+
+    if (!req.body.isAdmin) {
+      req.body.isAdmin = false; 
+    }
+
     if (req.body.password.length < 8) {
       return res
         .status(400)
@@ -92,4 +99,53 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { create, findById, update, updateLoggedUser, deleteUser };
+const checkMail = async (req, res) => {
+  try {
+    const user = await userService.findByEmailService(req.body.email);
+    sendMailService.sendMailService(user.email);
+    return res.json({ message: "email sent successfully" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+const verifyToken = (req, res) => {
+  try {
+    const token = parseInt(req.params.token, 10);
+    const result = tokenService.verifyToken(token);
+
+    if (!result.valid) {
+      return res.status(400).json({ message: result.message });
+    }
+
+    return res.json({ message: "Token is valid" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+const modifyPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 8 characters" });
+    }
+
+    await userService.updatePasswordService(email, password);
+    return res.json({ message: "User successfully updated!"});
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+export default { create, findById, update, updateLoggedUser,
+  deleteUser, checkMail, verifyToken, modifyPassword };
