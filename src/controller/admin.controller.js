@@ -1,4 +1,5 @@
 import adminService from "../services/admin.service.js";
+import jwt from'jsonwebtoken'
 
 const findAll = async (req, res) => {
   try {
@@ -14,13 +15,35 @@ const findAll = async (req, res) => {
   }
 };
 
+const updateAdmin = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name && !email && !password) {
+      return res.status(400).json({
+        error: "Please add at least one of the fields: name, email, password",
+      });
+    }
+    const id = req.params.id;
+    await userService.updateService(id, name, email, password);
+    res.json({ message: "User successfully updated!" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+
 export const deleteUserById = async (req, res) => {
   try {
-    const requestingUserId = req.body.id;
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
     const userIdToDelete = req.params.id;
 
     const result = await adminService.deleteUserById(
-      requestingUserId,
+      userId,
       userIdToDelete
     );
     res.status(200).json(result);
@@ -29,4 +52,4 @@ export const deleteUserById = async (req, res) => {
   }
 };
 
-export default { findAll, deleteUserById };
+export default { findAll, deleteUserById, updateAdmin };

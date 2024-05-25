@@ -1,53 +1,6 @@
 import userService from "../services/user.service.js";
-import sendMailService from "../services/sendMail.service.js";
-import tokenService from "../services/token.service.js";
+import jwt from'jsonwebtoken';
 import bcrypt from 'bcrypt';
-
-const create = async (req, res) => {
-  try {
-
-    const requiredFields = ["name", "email", "password", "cityAndState"];
-
-    const { name, email, password, cityAndState } = req.body;
-
-
-    for (const field of requiredFields) {
-      if (!req.body[field]) {
-        return res.status(400).json({ error: `Please add the field ${field}` });
-      }
-    }
-
-    if (!req.body.isAdmin) {
-      req.body.isAdmin = false; 
-    }
-
-    if (req.body.password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 8 characters" });
-    }
-    const salt = await bcrypt.genSalt(10);
-
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const user = await userService.create({
-    name,
-    email,
-    password: hashedPassword,
-    cityAndState,
-    });
-
-
-    res.status(201).json({
-      message: "User created",
-      id: user._id,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
 
 const findById = async (req, res) => {
   try {
@@ -69,6 +22,15 @@ const update = async (req, res) => {
         error: "Please add at least one of the fields: name, email, password",
       });
     }
+
+    if (!userService.validatePassword(password)) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
+        });
+    }
     const id = req.params.id;
 
     //let "hashed Password";
@@ -88,70 +50,46 @@ const update = async (req, res) => {
   }
 };
 
+const updateLoggedUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name && !email && !password) {
+      return res.status(400).json({
+        error: "Please add at least one of the fields: name, email, password",
+      });
+    }
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
+
+    let hashedPassword = password;
+    if (password) {
+      const salt =  await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+      
+    }
+    await userService.updateService(userId, name, email, hashedPassword);
+    res.json({ message: "User successfully updated!" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
-    const userIdToDelete = req.params.id;
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
 
-    const result = await userService.deleteUser(userIdToDelete);
+    const result = await userService.deleteUser(userId);
     res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
 
-const checkMail = async (req, res) => {
-  try {
-    const user = await userService.findByEmailService(req.body.email);
-    sendMailService.sendMailService(user.email);
-    return res.json({ message: "email sent successfully" });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-const verifyToken = (req, res) => {
-  try {
-    const token = parseInt(req.params.token, 10);
-    const result = tokenService.verifyToken(token);
-
-    if (!result.valid) {
-      return res.status(400).json({ message: result.message });
-    }
-
-    return res.json({ message: "Token is valid" });
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-const modifyPassword = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 8 characters" });
-    }
-
-    let hashedPassword = password;
-    if (password) {
-      const salt =  await bcrypt.genSalt(10);
-      hashedPassword = await bcrypt.hash(password, salt);
-    }
-
-    await userService.updatePasswordService(email, hashedPassword);
-    return res.json({ message: "User successfully updated!"});
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-export default { create, findById, update, 
-  deleteUser, checkMail, verifyToken, modifyPassword };
+export default { findById, update, deleteUser, updateLoggedUser };

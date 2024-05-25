@@ -15,7 +15,11 @@ const UserSchema = new mongoose.Schema({
         required: true,
         select: false   
     },
-    cityAndState: {
+    city: {
+        type: String,
+        required: true   
+    },
+    state: {
         type: String,
         required: true   
     },
