@@ -17,7 +17,7 @@ export default {
       },
     ],
     paths: {
-      "/user/": {
+      "/auth/register": {
         post: {
           summary: "Cria um novo usuário",
           description: "Cria um novo usuário",
@@ -35,6 +35,8 @@ export default {
                       name: "usuario",
                       email: "email@example.com",
                       password: "exemplo123",
+                      city: "Salvador",
+                      state: "Bahia",
                     },
                   },
                 },
@@ -55,6 +57,137 @@ export default {
           },
         },
       },
+      "/auth/check-mail": {
+        post: {
+          summary: "Verifica email",
+          description:
+            "Verifica se o email digitado existe no banco de dados, se sim, envia um token para o email do usuário",
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    email: {
+                      type: "string",
+                      description: "Email do usuário",
+                    },
+                  },
+                  required: ["email"],
+                },
+                examples: {
+                  user: {
+                    summary: "Exemplo de email",
+                    value: {
+                      email: "email@example.com",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: "Token enviado com sucesso",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/TokenResponse",
+                  },
+                },
+              },
+            },
+            404: {
+              description: "Usuário não encontrado",
+            },
+          },
+        },
+      },
+      "/auth/verify-token/{token}": {
+        get: {
+          summary: "Verifica token",
+          description: "Verifica se o token digitado é válido",
+          parameters: [
+            {
+              name: "token",
+              in: "path",
+              description: "Token do usuário",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: "Token válido!",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/TokenResponse",
+                  },
+                },
+              },
+            },
+            404: {
+              description: "Token expirado ou inválido!",
+            },
+          },
+        },
+      },
+      "/auth/modify-password": {
+        post: {
+          summary: "Alteração de senha do usuário",
+          description: "Altera a senha do usuário",
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    email: {
+                      type: "string",
+                      description: "Email do usuário",
+                    },
+                    newPassword: {
+                      type: "string",
+                      description: "Nova senha do usuário",
+                    }
+                  },
+                  required: ["email", "newPassword", "token"],
+                },
+                examples: {
+                  user: {
+                    summary: "Exemplo de modificação de senha",
+                    value: {
+                      email: "email@example.com",
+                      newPassword: "Password1*"
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: "Senha alterada com sucesso",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/PasswordChangeResponse",
+                  },
+                },
+              },
+            },
+            400: {
+              description: "Dados inválidos",
+            },
+            404: {
+              description: "Usuário não encontrado",
+            },
+          },
+        },
+      },
       "/user/{id}": {
         get: {
           summary: "Busca um usuário pelo ID",
@@ -64,7 +197,7 @@ export default {
             {
               name: "id",
               in: "path",
-              description: "Id do usuário",
+              description: "ID do usuário",
               required: true,
               schema: {
                 type: "string",
@@ -86,16 +219,17 @@ export default {
               description: "Usuário não encontrado",
             },
           },
-        },
+        }},
+        "/user/{token}": {
         delete: {
-          summary: "Deleta um usuário pelo ID",
-          description: "Deleta um usuário pelo ID",
-          operationId: "deleteUserById",
+          summary: "Deleta um usuário pelo token",
+          description: "Deleta um usuário pelo token",
+          operationId: "deleteUserByToken",
           parameters: [
             {
-              name: "id",
+              name: "token",
               in: "path",
-              description: "Id do usuário",
+              description: "token do usuário",
               required: true,
               schema: {
                 type: "string",
@@ -112,15 +246,14 @@ export default {
           },
         },
         patch: {
-          summary: "Atualiza um usuário pelo ID",
-          description:
-            "Atualiza os dados de um usuário pelo ID, exceto o email",
-          operationId: "updateUserById",
+          summary: "Atualiza um usuário pelo token",
+          description: "Atualiza os dados de um usuário pelo token, exceto o email",
+          operationId: "updateLoggedUser",
           parameters: [
             {
-              name: "id",
+              name: "token",
               in: "path",
-              description: "Id do usuário",
+              description: "token do usuário",
               required: true,
               schema: {
                 type: "string",
@@ -141,8 +274,16 @@ export default {
                       type: "string",
                       description: "Senha do usuário",
                     },
+                    city: {
+                      type: "string",
+                      description: "Cidade",
+                    },
+                    state: {
+                      type: "string",
+                      description: "Estado",
+                    },
                   },
-                  required: ["name", "password"],
+                  required: ["name", "password", "city", "state"],
                 },
                 examples: {
                   user: {
@@ -150,6 +291,8 @@ export default {
                     value: {
                       name: "novoNome",
                       password: "novaSenha123",
+                      city: "Aracaju",
+                      state: "Sergipe",
                     },
                   },
                 },
@@ -176,8 +319,7 @@ export default {
       "/admin/users/": {
         get: {
           summary: "Busca todos os usuários (admin)",
-          description:
-            "Retorna uma lista de todos os usuários para administração",
+          description: "Retorna uma lista de todos os usuários para administração",
           operationId: "findAllUsers",
           responses: {
             200: {
@@ -197,47 +339,47 @@ export default {
         },
       },
       "/admin/user/{id}": {
-        "delete": {
-          "summary": "Deleta um usuário pelo ID (admin)",
-          "description": "Deleta um usuário pelo ID para administração",
-          "operationId": "deleteUserById",
-          "parameters": [
+        delete: {
+          summary: "Deleta um usuário pelo ID (admin)",
+          description: "O administrador deleta qualquer usuário passando o ID",
+          operationId: "deleteUserByIdAdmin",
+          parameters: [
             {
-              "name": "id",
-              "in": "path",
-              "description": "Id do usuário a ser deletado",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "Id do administrador"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Usuário deletado com sucesso"
+              name: "id",
+              in: "path",
+              description: "ID do usuário a ser deletado",
+              required: true,
+              schema: {
+                type: "string",
+              },
             },
-            "404": {
-              "description": "Usuário não encontrado"
-            }
-          }
-        }
-      },      
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    token: {
+                      type: "string",
+                      description: "Token do administrador",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: "Usuário deletado com sucesso",
+            },
+            404: {
+              description: "Usuário não encontrado",
+            },
+          },
+        },
+      },
       "/auth/login": {
         post: {
           summary: "Login de usuário",
@@ -283,6 +425,13 @@ export default {
                   },
                 },
               },
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/TokenResponse",
+                  },
+                },
+              },
             },
             401: {
               description: "Credenciais inválidas",
@@ -308,8 +457,34 @@ export default {
               type: "string",
               description: "Senha do usuário",
             },
+            city: {
+              type: "string",
+              description: "Cidade do usuário",
+            },
+            state: {
+              type: "string",
+              description: "Estado do usuário",
+            },
           },
           required: ["name", "email", "password"],
+        },
+        TokenResponse: {
+          type: "object",
+          properties: {
+            token: {
+              type: "string",
+              description: "Token de autenticação",
+            },
+          },
+        },
+        PasswordChangeResponse: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+              description: "Mensagem de confirmação de alteração de senha",
+            },
+          },
         },
       },
     },
