@@ -152,11 +152,7 @@ export default {
                     newPassword: {
                       type: "string",
                       description: "Nova senha do usuário",
-                    },
-                    token: {
-                      type: "string",
-                      description: "Token de autenticação",
-                    },
+                    }
                   },
                   required: ["email", "newPassword", "token"],
                 },
@@ -165,8 +161,7 @@ export default {
                     summary: "Exemplo de modificação de senha",
                     value: {
                       email: "email@example.com",
-                      newPassword: "Password1*",
-                      token: "valid_token",
+                      newPassword: "Password1*"
                     },
                   },
                 },
@@ -224,16 +219,17 @@ export default {
               description: "Usuário não encontrado",
             },
           },
-        },
+        }},
+        "/user/{token}": {
         delete: {
-          summary: "Deleta um usuário pelo ID",
-          description: "Deleta um usuário pelo ID",
-          operationId: "deleteUserById",
+          summary: "Deleta um usuário pelo token",
+          description: "Deleta um usuário pelo token",
+          operationId: "deleteUserByToken",
           parameters: [
             {
-              name: "id",
+              name: "token",
               in: "path",
-              description: "ID do usuário",
+              description: "token do usuário",
               required: true,
               schema: {
                 type: "string",
@@ -250,14 +246,14 @@ export default {
           },
         },
         patch: {
-          summary: "Atualiza um usuário pelo ID",
-          description: "Atualiza os dados de um usuário pelo ID, exceto o email",
-          operationId: "updateUserById",
+          summary: "Atualiza um usuário pelo token",
+          description: "Atualiza os dados de um usuário pelo token, exceto o email",
+          operationId: "updateLoggedUser",
           parameters: [
             {
-              name: "id",
+              name: "token",
               in: "path",
-              description: "ID do usuário",
+              description: "token do usuário",
               required: true,
               schema: {
                 type: "string",
