@@ -1,4 +1,6 @@
 import adminService from "../services/admin.service.js";
+import userService from "../services/user.service.js";
+
 import jwt from'jsonwebtoken'
 
 const findAll = async (req, res) => {
