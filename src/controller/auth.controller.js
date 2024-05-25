@@ -1,10 +1,10 @@
-import {loginService, generateToken} from '../services/auth.service.js';
+import {authService, generateToken} from '../services/auth.service.js';
 
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const login = async (req, res) => {
+const authenticate = async (req, res) => {
    
     const requiredFields = ['email', 'password'];
 
@@ -14,7 +14,7 @@ const login = async (req, res) => {
         }
     }
 
-    let user = await loginService(req.body.email);
+    let user = await authService(req.body.email);
 
     if (!user) {
          return res.status(404).json({ error: 'User not found' });
@@ -31,4 +31,4 @@ const login = async (req, res) => {
 
 }
 
-export default { login };
+export default { authenticate };

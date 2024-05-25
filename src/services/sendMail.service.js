@@ -34,7 +34,7 @@ const sendMailService = (email) => {
     <div style="display: inline-block;">
       ${tokenHtml}
     </div>
-    <p style="margin-top: 20px;">O token acima expira em 5 minutos!</p>
+    <p style="margin-top: 20px;">The above token expires in 5 minutes!</p>
   </div>
 `;
 
