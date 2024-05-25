@@ -15,10 +15,10 @@ const findById = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name && !email && !password) {
+    const { name, email, password, city, state } = req.body;
+    if (!name && !email && !password && !city && !state) {
       return res.status(400).json({
-        error: "Please add at least one of the fields: name, email, password",
+        error: "Please add at least one of the fields: name, email, password, city, state",
       });
     }
 
@@ -42,10 +42,10 @@ const update = async (req, res) => {
 
 const updateLoggedUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name && !email && !password) {
+    const { name, email, password, city, state } = req.body;
+    if (!name && !email && !password && !city && !state) {
       return res.status(400).json({
-        error: "Please add at least one of the fields: name, email, password",
+        error: "Please add at least one of the fields: name, email, password, city, state",
       });
     }
     let token = req.headers.authorization;
