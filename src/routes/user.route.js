@@ -12,6 +12,8 @@ route.delete('/:id', userController.deleteUser);
 route.post('/check-mail', userController.checkMail);
 route.get('/verify-token/:token', userController.verifyToken);
 route.post('/modify-password', userController.modifyPassword);
+route.patch("/", validToken, userController.updateLoggedUser);
+route.delete('/', validToken, userController.deleteUser);
 
 // route.get('/', validToken, userController.findAll);
 // route.get('/:id', validId, validUser, validToken, userController.findById);

@@ -1,7 +1,7 @@
 import userService from "../services/user.service.js";
 import sendMailService from "../services/sendMail.service.js";
 import tokenService from "../services/token.service.js";
-
+import jwt from'jsonwebtoken'
 
 const create = async (req, res) => {
   try {
@@ -64,11 +64,35 @@ const update = async (req, res) => {
   }
 };
 
+const updateLoggedUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name && !email && !password) {
+      return res.status(400).json({
+        error: "Please add at least one of the fields: name, email, password",
+      });
+    }
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
+    await userService.updateService(userId, name, email, password);
+    res.json({ message: "User successfully updated!" });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
-    const userIdToDelete = req.params.id;
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
 
-    const result = await userService.deleteUser(userIdToDelete);
+    const result = await userService.deleteUser(userId);
     res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -123,5 +147,5 @@ const modifyPassword = async (req, res) => {
   }
 };
 
-export default { create, findById, update, 
+export default { create, findById, update, updateLoggedUser,
   deleteUser, checkMail, verifyToken, modifyPassword };

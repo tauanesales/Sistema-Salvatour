@@ -1,4 +1,5 @@
 import adminService from "../services/admin.service.js";
+import jwt from'jsonwebtoken'
 
 const findAll = async (req, res) => {
   try {
@@ -19,11 +20,14 @@ const findAll = async (req, res) => {
 
 export const deleteUserById = async (req, res) => {
   try {
-    const requestingUserId = req.body.id;
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
     const userIdToDelete = req.params.id;
 
     const result = await adminService.deleteUserById(
-      requestingUserId,
+      userId,
       userIdToDelete
     );
     res.status(200).json(result);
