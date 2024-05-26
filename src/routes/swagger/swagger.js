@@ -21,12 +21,8 @@ export default {
         }
       },
       {
-        url: "http://localhost:3000",
-        description: "Servidor local",
-      },
-      {
         url: "https://back.matc84.tauane.artadevs.tech",
-        description: "Servidor Vercel",
+        description: "Servidor Vercel (Produção)",
       },
     ],
     paths: {
