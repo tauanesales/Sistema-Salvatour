@@ -8,6 +8,19 @@ export default {
     },
     servers: [
       {
+        url: "{protocol}://{host}",
+        description: "Servidor Dinâmico",
+        variables: {
+          protocol: {
+            default: "http",
+            enum: ["http", "https"]
+          },
+          host: {
+            default: "localhost:3000"
+          }
+        }
+      },
+      {
         url: "http://localhost:3000",
         description: "Servidor local",
       },
