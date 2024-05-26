@@ -20,7 +20,22 @@ const options = {
 }
 
 const apiSpec = swaggerJsDoc(swaggerJsDocOptions);
-router.get('/swagger.json', (_req, res) => res.json(apiSpec));
+router.get('/swagger.json', (req, res) => {
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const host = req.get('host');
+    const currentServerUrl = `${protocol}://${host}`;
+
+    apiSpec.servers = [
+    {
+        url: currentServerUrl,
+        description: "Servidor Atual"
+    },
+    ...apiSpec.servers
+    ];
+
+    res.json(apiSpec);
+});
+
 router.use('/', swaggerUi.serve, swaggerUi.setup(null, options));
 
 

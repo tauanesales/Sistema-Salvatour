@@ -8,12 +8,21 @@ export default {
     },
     servers: [
       {
-        url: "http://localhost:3000",
-        description: "Servidor local",
+        url: "{protocol}://{host}",
+        description: "Servidor Dinâmico",
+        variables: {
+          protocol: {
+            default: "http",
+            enum: ["http", "https"]
+          },
+          host: {
+            default: "localhost:3000"
+          }
+        }
       },
       {
         url: "https://back.matc84.tauane.artadevs.tech",
-        description: "Servidor Vercel",
+        description: "Servidor Vercel (Produção)",
       },
     ],
     paths: {
