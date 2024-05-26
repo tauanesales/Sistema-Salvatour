@@ -20,7 +20,18 @@ const options = {
 }
 
 const apiSpec = swaggerJsDoc(swaggerJsDocOptions);
-router.get('/swagger.json', (_req, res) => res.json(apiSpec));
+router.get('/swagger.json', (req, res) => {
+    const dynamicApiSpec = { ...apiSpec };
+    const protocol = req.protocol;
+    const host = req.get('host');
+
+    const dynamicServer = dynamicApiSpec.servers.find(server => server.url.includes('{protocol}://{host}'));
+    if (dynamicServer) {
+        dynamicServer.url = `${protocol}://${host}`;
+    }
+
+    res.json(dynamicApiSpec);
+});
 router.use('/', swaggerUi.serve, swaggerUi.setup(null, options));
 
 
