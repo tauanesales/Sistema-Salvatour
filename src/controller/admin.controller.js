@@ -9,7 +9,6 @@ const findAll = async (req, res) => {
       return res.status(400).json({ error: "There are no registered users" });
     }
 
-    users.forEach((user) => user.password = "")
 
     res.json(users);
   } catch (error) {
