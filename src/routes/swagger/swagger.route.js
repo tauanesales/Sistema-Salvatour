@@ -22,16 +22,21 @@ const options = {
 const apiSpec = swaggerJsDoc(swaggerJsDocOptions);
 router.get('/swagger.json', (req, res) => {
     const dynamicApiSpec = { ...apiSpec };
-    const protocol = req.protocol;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
     const host = req.get('host');
+    const currentServerUrl = `${protocol}://${host}`;
 
-    const dynamicServer = dynamicApiSpec.servers.find(server => server.url.includes('{protocol}://{host}'));
-    if (dynamicServer) {
-        dynamicServer.url = `${protocol}://${host}`;
-    }
+    apiSpec.servers = [
+    {
+        url: currentServerUrl,
+        description: "Servidor Atual"
+    },
+    ...apiSpec.servers
+    ];
 
     res.json(dynamicApiSpec);
 });
+
 router.use('/', swaggerUi.serve, swaggerUi.setup(null, options));
 
 
