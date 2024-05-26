@@ -10,9 +10,7 @@ const connect = async () => {
     mongoose.set("strictQuery", true);
     await mongoose.connect(
       `mongodb+srv://${dbUser}:${dbPassword}@cluster0.5xtfehw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
-      {useNewUrlParser: true,
-      useUnifiedTopology: true,
-      dbName: 'MATC84-LABORATORIO-DE-PROGRAMACAO-WEB'}
+      {dbName: 'MATC84-LABORATORIO-DE-PROGRAMACAO-WEB'}
     );
     console.log("Banco conectado com sucesso!");
   } catch (error) {
