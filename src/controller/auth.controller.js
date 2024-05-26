@@ -126,7 +126,7 @@ const modifyPassword = async (req, res) => {
     }
 
     const salt =  await bcrypt.genSalt(10);
-    hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
     
 
     await userService.updatePasswordService(email, hashedPassword);
