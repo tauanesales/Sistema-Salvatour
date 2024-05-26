@@ -4,10 +4,10 @@ import mongoose from "mongoose";
 export const validId = (req, res, next) => {
   try {
     const id = req.params.id;
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Invalid ID" });
     }
+    req.idToDelete = id;
     next();
   } catch (error) {
     console.error(error);
@@ -17,13 +17,11 @@ export const validId = (req, res, next) => {
 
 export const validUser = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.id;
     const user = await userService.findByIdService(id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
-    req.id = id;
     req.user = user;
 
     next();

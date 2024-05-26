@@ -4,7 +4,7 @@ import tokenService from "../services/token.service.js";
 
 dotenv.config();
 
-const sendMailService = (email) => {
+const sendMailService = (email, id) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.office365.com",
     port: 587,
@@ -15,7 +15,7 @@ const sendMailService = (email) => {
     },
   });
 
-  const token = tokenService.generateToken();
+  const token = tokenService.generateToken(id);
 
   const tokenHtml = token
     .split("")
@@ -34,7 +34,7 @@ const sendMailService = (email) => {
     <div style="display: inline-block;">
       ${tokenHtml}
     </div>
-    <p style="margin-top: 20px;">The above token expires in 5 minutes!</p>
+    <p style="margin-top: 20px;">The above token expires in 10 minutes!</p>
   </div>
 `;
 

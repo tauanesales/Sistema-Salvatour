@@ -3,7 +3,7 @@ import userService from "../services/user.service.js";
 import sendMailService from "../services/sendMail.service.js";
 import tokenService from "../services/token.service.js";
 import dotenv from "dotenv";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
@@ -23,9 +23,12 @@ const authenticate = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const verifyPassword = await bcrypt.compare(req.body.password, user.password);
+    const verifyPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
     if (!verifyPassword) {
-        return res.status(404).json({ error: 'Invalid password' });
+      return res.status(404).json({ error: "Invalid password" });
     }
 
     const token = generateToken(user.id);
@@ -40,9 +43,8 @@ const authenticate = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-
     const requiredFields = ["name", "email", "password", "city", "state"];
-    
+
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({ error: `Please add the field ${field}` });
@@ -51,8 +53,9 @@ const register = async (req, res) => {
 
     const { name, email, password, city, state } = req.body;
 
-    if (!req.body.isAdmin) {
-      req.body.isAdmin = false;
+    const isAdmin = false;
+    if (req.body.isAdmin) {
+      isAdmin = req.body.isAdmin;
     }
 
     if (!userService.validatePassword(req.body.password)) {
@@ -67,11 +70,12 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await userService.registerService({
-    name,
-    email,
-    password: hashedPassword,
-    city,
-    state
+      name,
+      email,
+      password: hashedPassword,
+      city,
+      isAdmin,
+      state,
     });
 
     res.status(201).json({
@@ -87,7 +91,7 @@ const register = async (req, res) => {
 
 const sendMailController = async (req, res) => {
   try {
-    sendMailService.sendMailService(req.user.email);
+    sendMailService.sendMailService(req.user.email, req.user.id);
     return res.json({ message: "email sent successfully" });
   } catch (error) {
     return res.status(500).json({
@@ -122,13 +126,11 @@ const modifyPassword = async (req, res) => {
         error:
           "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
       });
-
     }
 
-    const salt =  await bcrypt.genSalt(10);
-    hashedPassword = await bcrypt.hash(password, salt);
-    
-
+    const salt = await bcrypt.genSalt(10);
+    let hashedPassword = await bcrypt.hash(password, salt);
+    console.log(hashedPassword);
     await userService.updatePasswordService(email, hashedPassword);
     return res.json({ message: "User successfully updated!" });
   } catch (error) {
