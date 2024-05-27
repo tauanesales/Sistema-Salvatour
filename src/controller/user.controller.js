@@ -71,4 +71,4 @@ const findByToken = async (req, res) => {
   }
 };
 
-export default { findById, deleteUser, updateLoggedUser };
+export default { findById, deleteUser, updateLoggedUser, findByToken };
