@@ -56,4 +56,19 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { findById, deleteUser, updateLoggedUser };
+const findByToken = async (req, res) => {
+  try {
+    let token = req.headers.authorization;
+    token = token.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    const userId = decoded.id
+    const user = await userService.findByIdService(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+export default { findById, deleteUser, updateLoggedUser, findByToken };

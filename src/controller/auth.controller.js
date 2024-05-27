@@ -99,6 +99,7 @@ const sendMailController = async (req, res) => {
 const verifyToken = (req, res) => {
   try {
     const token = parseInt(req.params.token, 10);
+
     const result = tokenService.verifyToken(token);
 
     if (!result.valid) {
