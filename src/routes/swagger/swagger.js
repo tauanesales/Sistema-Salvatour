@@ -230,33 +230,6 @@ export default {
           },
         }},
         "/user/": {
-        get: {
-          summary: "Busca dados do usuário autenticado",
-          description: "Retorna os dados do usuário autenticado usando Bearer Token",
-          security: [
-            {
-              bearerAuth: []
-            }
-          ],
-          responses: {
-            200: {
-              description: "Dados do usuário",
-              content: {
-                "application/json": {
-                  schema: {
-                    $ref: "#/components/schemas/User",
-                  },
-                },
-              },
-            },
-            401: {
-              description: "Token não fornecido ou inválido",
-            },
-            404: {
-              description: "Usuário não encontrado",
-            },
-          },
-        },
         delete: {
           summary: "Deleta um usuário pelo token",
           description: "Deleta um usuário pelo token",
@@ -333,6 +306,35 @@ export default {
                   },
                 },
               },
+            },
+            404: {
+              description: "Usuário não encontrado",
+            },
+          },
+        },
+      },
+      "user/me": {
+       get: {
+          summary: "Busca dados do usuário autenticado",
+          description: "Retorna os dados do usuário autenticado usando Bearer Token",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          responses: {
+            200: {
+              description: "Dados do usuário",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/User",
+                  },
+                },
+              },
+            },
+            401: {
+              description: "Token não fornecido ou inválido",
             },
             404: {
               description: "Usuário não encontrado",
