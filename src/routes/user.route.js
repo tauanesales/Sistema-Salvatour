@@ -6,6 +6,7 @@ import {validToken} from "../middlewares/jwt.token.middleware.js";
 const route = express.Router();
 
 route.get('/:id', validId, validUser, userController.findById);
+route.get('/', validToken, userController.findByToken);
 route.patch("/", validToken, userController.updateLoggedUser);
 route.delete('/', validToken, userController.deleteUser);
 
