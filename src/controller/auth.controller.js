@@ -98,9 +98,7 @@ const sendMailController = async (req, res) => {
 
 const verifyToken = (req, res) => {
   try {
-    let token = req.headers.authorization;
-    token = token.replace('Bearer ', '')
-    token = parseInt(token, 10);
+    const token = parseInt(req.params.token, 10);
 
     const result = tokenService.verifyToken(token);
 
