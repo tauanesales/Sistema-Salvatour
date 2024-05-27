@@ -1,6 +1,6 @@
 {
   "name": "back-matc84-laboratorio-de-programacao-web",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "type": "module",
   "description": "Projeto MATC84",
   "main": "app.js",
