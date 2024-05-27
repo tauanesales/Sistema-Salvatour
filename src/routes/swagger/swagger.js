@@ -112,20 +112,14 @@ export default {
           },
         },
       },
-      "/auth/verify-token/{token}": {
+      "/auth/verify-token/": {
         get: {
           summary: "Verifica token",
           description: "Verifica se o token digitado é válido",
-          parameters: [
+          security: [
             {
-              name: "token",
-              in: "path",
-              description: "Token do usuário",
-              required: true,
-              schema: {
-                type: "string",
-              },
-            },
+              bearerAuth: []
+            }
           ],
           responses: {
             200: {
@@ -229,21 +223,42 @@ export default {
             },
           },
         }},
-        "/user/{token}": {
+        "/user/": {
+        get: {
+          summary: "Busca dados do usuário autenticado",
+          description: "Retorna os dados do usuário autenticado usando Bearer Token",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          responses: {
+            200: {
+              description: "Dados do usuário",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/User",
+                  },
+                },
+              },
+            },
+            401: {
+              description: "Token não fornecido ou inválido",
+            },
+            404: {
+              description: "Usuário não encontrado",
+            },
+          },
+        },
         delete: {
           summary: "Deleta um usuário pelo token",
           description: "Deleta um usuário pelo token",
           operationId: "deleteUserByToken",
-          parameters: [
+          security: [
             {
-              name: "token",
-              in: "path",
-              description: "token do usuário",
-              required: true,
-              schema: {
-                type: "string",
-              },
-            },
+              bearerAuth: []
+            }
           ],
           responses: {
             200: {
@@ -258,16 +273,10 @@ export default {
           summary: "Atualiza um usuário pelo token",
           description: "Atualiza os dados de um usuário pelo token, exceto o email",
           operationId: "updateLoggedUser",
-          parameters: [
+          security: [
             {
-              name: "token",
-              in: "path",
-              description: "token do usuário",
-              required: true,
-              schema: {
-                type: "string",
-              },
-            },
+              bearerAuth: []
+            }
           ],
           requestBody: {
             content: {
