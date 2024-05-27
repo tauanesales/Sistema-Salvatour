@@ -158,19 +158,19 @@ export default {
                       type: "string",
                       description: "Email do usuário",
                     },
-                    newPassword: {
+                    password: {
                       type: "string",
                       description: "Nova senha do usuário",
                     }
                   },
-                  required: ["email", "newPassword", "token"],
+                  required: ["email", "password", "token"],
                 },
                 examples: {
                   user: {
                     summary: "Exemplo de modificação de senha",
                     value: {
                       email: "email@example.com",
-                      newPassword: "Password1*"
+                      password: "Password1*"
                     },
                   },
                 },
@@ -229,21 +229,15 @@ export default {
             },
           },
         }},
-        "/user/{token}": {
+        "/user/": {
         delete: {
           summary: "Deleta um usuário pelo token",
           description: "Deleta um usuário pelo token",
           operationId: "deleteUserByToken",
-          parameters: [
+          security: [
             {
-              name: "token",
-              in: "path",
-              description: "token do usuário",
-              required: true,
-              schema: {
-                type: "string",
-              },
-            },
+              bearerAuth: []
+            }
           ],
           responses: {
             200: {
@@ -258,16 +252,10 @@ export default {
           summary: "Atualiza um usuário pelo token",
           description: "Atualiza os dados de um usuário pelo token, exceto o email",
           operationId: "updateLoggedUser",
-          parameters: [
+          security: [
             {
-              name: "token",
-              in: "path",
-              description: "token do usuário",
-              required: true,
-              schema: {
-                type: "string",
-              },
-            },
+              bearerAuth: []
+            }
           ],
           requestBody: {
             content: {
@@ -318,6 +306,35 @@ export default {
                   },
                 },
               },
+            },
+            404: {
+              description: "Usuário não encontrado",
+            },
+          },
+        },
+      },
+      "/user/me": {
+       get: {
+          summary: "Busca dados do usuário autenticado",
+          description: "Retorna os dados do usuário autenticado usando Bearer Token",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          responses: {
+            200: {
+              description: "Dados do usuário",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/User",
+                  },
+                },
+              },
+            },
+            401: {
+              description: "Token não fornecido ou inválido",
             },
             404: {
               description: "Usuário não encontrado",
@@ -450,6 +467,13 @@ export default {
       },
     },
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT"
+        }
+      },
       schemas: {
         User: {
           type: "object",
