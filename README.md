@@ -1,22 +1,26 @@
-﻿# BACK-MATC84-LABORATORIO-DE-PROGRAMACAO-WEB
- 
-## Table of Contents
+# Salvatour
 
-- [About](#about)
-- [Authors](#authors)
-- [Languages](#languages)
+## Descrição
 
-## About
+Bem-vindo ao Salvatour, o seu portal para descobrir a cidade mágica de Salvador, onde história, cultura e beleza natural se fundem em uma experiência única. Conheça um destino que promete momentos inesquecíveis, desde o seu centro histórico vibrante até as paisagens naturais deslumbrantes que encantam viajantes de todo o mundo.
 
-Atividade relacionada sobre a matéria de MATC84
+### Autores:
+- Tauane Sales 
+- Alberto Oliveira
+- Gabriel de Miranda
+- Debora 
+- Everton Oliveira
+- Guilherme Abreu
+- Joanderson Santos
+- Moisés Santos
+- Alisson Matias
+- Eva Raposo
+- Tarcisio
 
-## Authors
+ ### Linguagem e Tecnologias:
+- Node.js
+- Express.js
 
 
-## Languages
-
-JavaScript
-
-## 
-Gestâo de Projeto
--- a Denifir 
+### Links:
+- [Aplicação em Produção](https://back.matc84.tauane.artadevs.tech/docs/)
