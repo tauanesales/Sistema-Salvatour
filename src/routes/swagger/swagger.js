@@ -112,14 +112,20 @@ export default {
           },
         },
       },
-      "/auth/verify-token/": {
+      "/auth/verify-token/{token}": {
         get: {
           summary: "Verifica token",
           description: "Verifica se o token digitado é válido",
-          security: [
+          parameters: [
             {
-              bearerAuth: []
-            }
+              name: "token",
+              in: "path",
+              description: "Token do usuário",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
           ],
           responses: {
             200: {
