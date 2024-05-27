@@ -30,7 +30,7 @@ const updateAdmin = async (req, res) => {
     let hashedPassword = password;
     if (password) {
       const salt =  await bcrypt.genSalt(10);
-      hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await bcrypt.hash(password, salt);
       
     }
     await userService.updateService(id, name, email, hashedPassword, city, state);
