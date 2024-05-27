@@ -158,19 +158,19 @@ export default {
                       type: "string",
                       description: "Email do usuário",
                     },
-                    newPassword: {
+                    password: {
                       type: "string",
                       description: "Nova senha do usuário",
                     }
                   },
-                  required: ["email", "newPassword", "token"],
+                  required: ["email", "password", "token"],
                 },
                 examples: {
                   user: {
                     summary: "Exemplo de modificação de senha",
                     value: {
                       email: "email@example.com",
-                      newPassword: "Password1*"
+                      password: "Password1*"
                     },
                   },
                 },
