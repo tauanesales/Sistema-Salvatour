@@ -347,6 +347,11 @@ export default {
           summary: "Busca todos os usuários (admin)",
           description: "Retorna uma lista de todos os usuários para administração",
           operationId: "findAllUsers",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
           responses: {
             200: {
               description: "Lista de usuários",
@@ -369,6 +374,11 @@ export default {
           summary: "Deleta um usuário pelo ID (admin)",
           description: "O administrador deleta qualquer usuário passando o ID",
           operationId: "deleteUserByIdAdmin",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
           parameters: [
             {
               name: "id",
