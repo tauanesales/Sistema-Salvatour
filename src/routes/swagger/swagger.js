@@ -116,6 +116,15 @@ export default {
         get: {
           summary: "Verifica token",
           description: "Verifica se o token digitado é válido",
+          components: {
+            securitySchemes: {
+              bearerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT"
+              }
+            },
+          },
           security: [
             {
               bearerAuth: []
@@ -227,6 +236,15 @@ export default {
         get: {
           summary: "Busca dados do usuário autenticado",
           description: "Retorna os dados do usuário autenticado usando Bearer Token",
+          components: {
+            securitySchemes: {
+              bearerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT"
+              }
+            },
+          },
           security: [
             {
               bearerAuth: []
@@ -255,6 +273,15 @@ export default {
           summary: "Deleta um usuário pelo token",
           description: "Deleta um usuário pelo token",
           operationId: "deleteUserByToken",
+          components: {
+            securitySchemes: {
+              bearerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT"
+              }
+            },
+          },
           security: [
             {
               bearerAuth: []
@@ -273,6 +300,15 @@ export default {
           summary: "Atualiza um usuário pelo token",
           description: "Atualiza os dados de um usuário pelo token, exceto o email",
           operationId: "updateLoggedUser",
+          components: {
+            securitySchemes: {
+              bearerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT"
+              }
+            },
+          },
           security: [
             {
               bearerAuth: []
