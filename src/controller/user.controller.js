@@ -1,5 +1,6 @@
 import userService from "../services/user.service.js";
 import jwt from'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const findById = async (req, res) => {
   try {
@@ -25,7 +26,14 @@ const updateLoggedUser = async (req, res) => {
     token = token.replace('Bearer ', '')
     const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
     const userId = decoded.id
-    await userService.updateService(userId, name, email, password, city, state);
+
+    let hashedPassword = password;
+    if (password) {
+      const salt =  await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+      
+    }
+    await userService.updateService(userId, name, email, hashedPassword, city, state);
     res.json({ message: "User successfully updated!" });
   } catch (error) {
     return res.status(500).json({

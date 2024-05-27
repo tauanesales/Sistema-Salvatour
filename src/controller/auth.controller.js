@@ -2,8 +2,8 @@ import { loginService, generateToken } from "../services/auth.service.js";
 import userService from "../services/user.service.js";
 import sendMailService from "../services/sendMail.service.js";
 import tokenService from "../services/token.service.js";
-
 import dotenv from "dotenv";
+import bcrypt from 'bcrypt';
 
 dotenv.config();
 
@@ -23,8 +23,9 @@ const authenticate = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (user.password != req.body.password) {
-      return res.status(404).json({ error: "Invalid password" });
+    const verifyPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!verifyPassword) {
+        return res.status(404).json({ error: 'Invalid password' });
     }
 
     const token = generateToken(user.id);
@@ -39,12 +40,16 @@ const authenticate = async (req, res) => {
 
 const register = async (req, res) => {
   try {
+
     const requiredFields = ["name", "email", "password", "city", "state"];
+    
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({ error: `Please add the field ${field}` });
       }
     }
+
+    const { name, email, password, city, state } = req.body;
 
     if (!req.body.isAdmin) {
       req.body.isAdmin = false;
@@ -56,7 +61,18 @@ const register = async (req, res) => {
           "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
       });
     }
-    const user = await userService.registerService(req.body);
+
+    const salt = await bcrypt.genSalt(10);
+
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await userService.registerService({
+    name,
+    email,
+    password: hashedPassword,
+    city,
+    state
+    });
 
     res.status(201).json({
       message: "User created",
@@ -106,9 +122,14 @@ const modifyPassword = async (req, res) => {
         error:
           "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
       });
+
     }
 
-    await userService.updatePasswordService(email, password);
+    const salt =  await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+
+    await userService.updatePasswordService(email, hashedPassword);
     return res.json({ message: "User successfully updated!" });
   } catch (error) {
     return res.status(500).json({
