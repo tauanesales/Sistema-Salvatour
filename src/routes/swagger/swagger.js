@@ -313,7 +313,7 @@ export default {
           },
         },
       },
-      "user/me": {
+      "/user/me": {
        get: {
           summary: "Busca dados do usuário autenticado",
           description: "Retorna os dados do usuário autenticado usando Bearer Token",
