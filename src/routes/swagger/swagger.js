@@ -390,22 +390,6 @@ export default {
               },
             },
           ],
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": {
-                schema: {
-                  type: "object",
-                  properties: {
-                    token: {
-                      type: "string",
-                      description: "Token do administrador",
-                    },
-                  },
-                },
-              },
-            },
-          },
           responses: {
             200: {
               description: "Usuário deletado com sucesso",
