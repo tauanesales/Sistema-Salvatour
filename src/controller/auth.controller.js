@@ -50,9 +50,9 @@ const register = async (req, res) => {
     }
 
     const { name, email, password, city, state } = req.body;
-
-    if (!req.body.isAdmin) {
-      req.body.isAdmin = false;
+    const isAdmin = false
+    if (req.body.isAdmin) {
+      isAdmin = req.body.isAdmin;
     }
 
     if (!userService.validatePassword(req.body.password)) {
@@ -71,7 +71,8 @@ const register = async (req, res) => {
     email,
     password: hashedPassword,
     city,
-    state
+    state,
+    isAdmin
     });
 
     res.status(201).json({
