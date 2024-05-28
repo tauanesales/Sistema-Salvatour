@@ -9,28 +9,24 @@ function generateToken() {
     return token.toString();
 }
 
-function verifyToken(userId, token) {
-    const storedToken = tokens[userId];
-
-    if (storedToken === undefined) {
-        return { valid: false, message: "No token found for this user!" };
-    }
-
+function verifyToken(token) {
+    const storedToken = tokens[0]; 
+    
     if (storedToken !== parseInt(token)) {
         return { valid: false, message: "Invalid token!" };
     }
 
     const currentTime = Date.now();
-    const elapsedTime = (currentTime - tokenTimes[userId]) / 1000 / 60;
+    const elapsedTime = (currentTime - tokenTime) / 1000 / 60;
 
     if (elapsedTime > 15) {
-        delete tokens[userId];
-        delete tokenTimes[userId];
+        delete tokens[0]; 
         return { valid: false, message: "Expired token!" };
     } else {
         return { valid: true, message: "Valid token!" };
     }
 }
+
 
 export default {
     generateToken,
