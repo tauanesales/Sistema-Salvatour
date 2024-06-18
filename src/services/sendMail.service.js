@@ -8,9 +8,9 @@ const mailersend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY,
 });
 
-const sendMailService = async (email, id) => {
+const sendMailService = async (email) => {
   try {
-    const token = tokenService.generateToken(id);
+    const token = tokenService.generateToken();
 
     const tokenHtml = token
       .split("")
