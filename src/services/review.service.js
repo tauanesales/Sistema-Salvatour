@@ -1,20 +1,17 @@
 import Review from "../models/Review.js";
 
-const createReview = async (reviewData) => {
-    const review = new Review(reviewData);
-    return await review.save();
-};
+const createReview = (reviewData) => Review.create(reviewData);
 
-const getReviewsByref_touristSpot = async (ref_turismId) => {
-    return await Review.find({ ref_touristSpot }).populate('userId', 'name');
-};
+const getReviewsByTouristAttractionId = (TouristAttractionId) =>
+  Review.find({ TouristAttractionId });
 
-const getUserReviews = async (userId) => {
-    return await Review.find({ userId }).populate('ref_touristSpotId', 'name');
-};
+const getUserReviews = (userId) => Review.find({ userId });
 
-const deleteReview = async (reviewId) => {
-    return await Review.findByIdAndDelete(reviewId);
-};
+const deleteReview = (reviewId) => Review.findByIdAndDelete(reviewId);
 
-export default { createReview, getUserReviews, getReviewsByref_touristSpot, deleteReview };
+export default {
+  createReview,
+  getReviewsByTouristAttractionId,
+  getUserReviews,
+  deleteReview,
+};

@@ -75,7 +75,7 @@ const findByToken = async (req, res) => {
 const createReview = async (req, res) => {
   try {
     const {rating} = req.body; 
-    const {ref_touristSpot} = req.params;
+    const {TouristAttractionId} = req.params;
 
     if (!rating) {
       return res.status(400).json({ error: "Please provide rating" });
@@ -86,7 +86,7 @@ const createReview = async (req, res) => {
     const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
     const userId = decoded.id;
 
-    const reviewData = { userId, ref_touristSpot, rating };
+    const reviewData = { userId, TouristAttractionId, rating };
     const review = await reviewService.createReview(reviewData);
 
     res.status(201).json(review);

@@ -6,9 +6,9 @@ const ReviewSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    ref_touristSpotId: {
+    TouristAttractionId: {
         type: String,
-        ref: 'ref_touristSpot',
+        ref: 'TouristAttraction',
         required: true
     },
     rating: {
