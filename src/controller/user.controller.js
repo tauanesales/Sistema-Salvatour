@@ -1,5 +1,4 @@
 import userService from "../services/user.service.js";
-import userService from "../services/review.service.js";
 import jwt from'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
