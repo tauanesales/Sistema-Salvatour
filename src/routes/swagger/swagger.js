@@ -459,6 +459,158 @@ export default {
           },
         },
       },
+      "/touristAttraction/all": {
+        get: {
+          summary: "Busca todos os pontos turísticos (admin)",
+          description: "Retorna uma lista de todos os pontos turísticos",
+          operationId: "getAttractions",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          responses: {
+            200: {
+              description: "Lista de atrações turísticas",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "array",
+                    items: {
+                      $ref: "#/components/schemas/TouristAttraction",
+                    },
+                  },
+                },
+              },
+            }
+          },
+        },
+      },
+      "/touristAttraction/create": {
+        post: {
+          summary: "Cria um ponto turístico (admin)",
+          description: "Realiza a criação de um ponto turístico definido por ID",
+          operationId: "addAttraction",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/TouristAttraction",
+                },
+                examples: {
+                  touristAttraction: {
+                    summary: "Exemplo de ponto turístico",
+                    value: {
+                      name: "Ponto turístico X",
+                      address: "Rua Exemplo, n 001",
+                      openingHours: "Seg a sex -> 09hrs - 18hrs",
+                      typeOfAttraction: "TipoO1",
+                      description: "Esta é uma longa descrição exemplo de uma atração turística",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            201: {
+              description: "Atração Turística registrada com sucesso",
+            },
+            400: {
+              description: "Campos obrigatórios em falta",
+            },
+          },
+        },
+      },
+      "/touristAttraction/{id}/": {
+        patch: {
+          summary: "Atualiza um ponto turístico (admin)",
+          description: "Realiza uma atualização em um ponto turístico definido por ID",
+          operationId: "updateAttraction",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              description: "ID da atração turística a ser alterada",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          requestBody: {
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/TouristAttraction",
+                },
+                examples: {
+                  touristAttraction: {
+                    summary: "Exemplo de ponto turístico",
+                    value: {
+                      name: "Ponto turístico X",
+                      address: "Rua Exemplo, n 001",
+                      openingHours: "Seg a sex -> 09hrs - 18hrs",
+                      typeOfAttraction: "TipoO1",
+                      description: "Esta é uma longa descrição exemplo de uma atração turística",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            204: {
+              description: "Atração Turística atualizada com sucesso",
+            },
+            404: {
+              description: "Atração Turística não encontrada",
+            },
+            400: {
+              description: "Campos obrigatórios em falta",
+            },
+          },
+        },
+        delete: {
+          summary: "remove um ponto turístico (admin)",
+          description: "Realiza a remoção de um ponto turístico definido por ID",
+          operationId: "deleteAttraction",
+          security: [
+            {
+              bearerAuth: []
+            }
+          ],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              description: "ID do ponto turístico a ser removido",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          responses: {
+            204: {
+              description: "Atração Turística removida com sucesso",
+            },
+            404: {
+              description: "Atração Turística não encontrada",
+            }
+          },
+        },
+      },
     },
     components: {
       securitySchemes: {
@@ -469,6 +621,31 @@ export default {
         }
       },
       schemas: {
+        TouristAttraction: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              description: "Nome da atração turística"
+            },
+            address: {
+                type: "string",
+                description: "Endereço da atração turística"
+            },
+            openingHours: {
+                type: "string",
+                description: "Horário de funcionamento da atração turística"
+            },
+            typeOfAttraction: {
+                type: "string",
+                description: "Tipo de atração turística"
+            },
+            description: {
+                type: "string",
+                description: "Descrição da atração turística"
+            }
+          }
+        },
         User: {
           type: "object",
           properties: {
