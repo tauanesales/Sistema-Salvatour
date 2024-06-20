@@ -6,10 +6,10 @@ const route = express.Router();
 
 route.post('/:TouristAttractionId', validToken, reviewController.createReview);
 
-route.get('/tourist-attraction/:TouristAttractionId', reviewController.getReviewsByTouristAttractionId);
-
 route.get('/user', validToken, reviewController.getUserReviews);
 
 route.delete('/:reviewId', validToken, reviewController.deleteReview);
+
+// route.get('/tourist-attraction/:TouristAttractionId', reviewController.getReviewsByTouristAttractionId);
 
 export default route;
