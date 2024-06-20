@@ -610,7 +610,6 @@ export default {
             }
           },
         },
-        
       },
       "/reviews/{TouristAttractionId}": {
         post: {
@@ -876,7 +875,5 @@ export default {
       },
     },
   },
-
-
   apis: ["./src/routes/*.route.js"],
 };
