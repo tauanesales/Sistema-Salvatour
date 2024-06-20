@@ -34,7 +34,7 @@ app.use(express.json());
 app.use("/admin", adminRoute);
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
-app.use("/review", reviewRoute);
+app.use("/reviews", reviewRoute);
 app.use("/touristAttraction", touristAttractionRoute);
 app.use("/", rootRoute);
 app.use("/docs", swaggerRoute);
