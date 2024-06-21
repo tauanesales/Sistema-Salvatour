@@ -13,14 +13,14 @@ const TouristAttractionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    typeOfAttraction: {
-        type: String,
-        required: true
-    },
     description: {
         type: String,
         required: true
-    }
+    },
+    image: {
+        type: String,
+        required: true,
+      },
 })
 
 const TouristAttraction = mongoose.model("TouristAttraction", TouristAttractionSchema);
