@@ -1,4 +1,6 @@
 import touristAttractionService from "../services/touristAttraction.service.js";
+import fs from "fs";
+import { imageToBase64 } from '../utils/imageUtils.js';
 
 const getAttractions = async (req, res) => {
   try {
@@ -18,7 +20,6 @@ const addAttraction = async (req, res) => {
       "name",
       "address",
       "openingHours",
-      "typeOfAttraction",
       "description",
     ];
 
@@ -28,17 +29,21 @@ const addAttraction = async (req, res) => {
       }
     }
 
-    const { name, address, openingHours, typeOfAttraction, description } =
-      req.body;
+    if (!req.file) {
+      return res.status(400).json({ error: 'Please upload an image' });
+    }
 
-    //TODO: testar se o usuário é admin
+    const { name, address, openingHours, description } = req.body;
+
+    const base64Data = imageToBase64(req.file.path);
+    fs.unlinkSync(req.file.path);
 
     const attraction = await touristAttractionService.createService({
       name,
       address,
       openingHours,
-      typeOfAttraction,
       description,
+      image: base64Data
     });
 
     res.status(201).json({
@@ -46,9 +51,10 @@ const addAttraction = async (req, res) => {
       id: attraction._id,
     });
   } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error", details: error.message });
   }
 };
+
 
 const updateAttraction = async (req, res) => {
   try {
