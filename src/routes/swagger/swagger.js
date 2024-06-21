@@ -676,42 +676,42 @@ export default {
           ],
         },
       },
-      "/reviews/tourist-attraction/{TouristAttractionId}": {
-        get: {
-          summary: "Obtém avaliações por atração turística",
-          description: "Obtém todas as avaliações para uma atração turística específica",
-          operationId: "getReviewsByTouristAttractionId",
-          parameters: [
-            {
-              name: "TouristAttractionId",
-              in: "path",
-              required: true,
-              description: "ID da atração turística",
-              schema: {
-                type: "string",
-              },
-            },
-          ],
-          responses: {
-            200: {
-              description: "Lista de avaliações",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "array",
-                    items: {
-                      $ref: "#/components/schemas/Review",
-                    },
-                  },
-                },
-              },
-            },
-            404: {
-              description: "Avaliações não encontradas",
-            },
-          },
-        },
-      },
+      // "/reviews/tourist-attraction/{TouristAttractionId}": {
+      //   get: {
+      //     summary: "Obtém avaliações por atração turística",
+      //     description: "Obtém todas as avaliações para uma atração turística específica",
+      //     operationId: "getReviewsByTouristAttractionId",
+      //     parameters: [
+      //       {
+      //         name: "TouristAttractionId",
+      //         in: "path",
+      //         required: true,
+      //         description: "ID da atração turística",
+      //         schema: {
+      //           type: "string",
+      //         },
+      //       },
+      //     ],
+      //     responses: {
+      //       200: {
+      //         description: "Lista de avaliações",
+      //         content: {
+      //           "application/json": {
+      //             schema: {
+      //               type: "array",
+      //               items: {
+      //                 $ref: "#/components/schemas/Review",
+      //               },
+      //             },
+      //           },
+      //         },
+      //       },
+      //       404: {
+      //         description: "Avaliações não encontradas",
+      //       },
+      //     },
+      //   },
+      // },
       "/reviews/user": {
         get: {
           summary: "Obtém avaliações do usuário",
