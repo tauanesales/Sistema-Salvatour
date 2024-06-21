@@ -51,5 +51,5 @@ export default {
   deleteUser,
   findByEmailService,
   updatePasswordService,
-  validatePassword
+  validatePassword,
 };
