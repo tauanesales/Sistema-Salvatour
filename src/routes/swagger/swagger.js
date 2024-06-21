@@ -13,12 +13,12 @@ export default {
         variables: {
           protocol: {
             default: "http",
-            enum: ["http", "https"]
+            enum: ["http", "https"],
           },
           host: {
-            default: "localhost:3000"
-          }
-        }
+            default: "localhost:3000",
+          },
+        },
       },
       {
         url: "https://back.matc84.tauane.artadevs.tech",
@@ -161,7 +161,7 @@ export default {
                     password: {
                       type: "string",
                       description: "Nova senha do usuário",
-                    }
+                    },
                   },
                   required: ["email", "password", "token"],
                 },
@@ -170,7 +170,7 @@ export default {
                     summary: "Exemplo de modificação de senha",
                     value: {
                       email: "email@example.com",
-                      password: "Password1*"
+                      password: "Password1*",
                     },
                   },
                 },
@@ -228,16 +228,17 @@ export default {
               description: "Usuário não encontrado",
             },
           },
-        }},
-        "/user/": {
+        },
+      },
+      "/user/": {
         delete: {
           summary: "Deleta um usuário pelo token",
           description: "Deleta um usuário pelo token",
           operationId: "deleteUserByToken",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           responses: {
             200: {
@@ -250,12 +251,13 @@ export default {
         },
         patch: {
           summary: "Atualiza um usuário pelo token",
-          description: "Atualiza os dados de um usuário pelo token, exceto o email",
+          description:
+            "Atualiza os dados de um usuário pelo token, exceto o email",
           operationId: "updateLoggedUser",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           requestBody: {
             content: {
@@ -314,13 +316,14 @@ export default {
         },
       },
       "/user/me": {
-       get: {
+        get: {
           summary: "Busca dados do usuário autenticado",
-          description: "Retorna os dados do usuário autenticado usando Bearer Token",
+          description:
+            "Retorna os dados do usuário autenticado usando Bearer Token",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           responses: {
             200: {
@@ -345,12 +348,13 @@ export default {
       "/admin/users/": {
         get: {
           summary: "Busca todos os usuários (admin)",
-          description: "Retorna uma lista de todos os usuários para administração",
+          description:
+            "Retorna uma lista de todos os usuários para administração",
           operationId: "findAllUsers",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           responses: {
             200: {
@@ -376,8 +380,8 @@ export default {
           operationId: "deleteUserByIdAdmin",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           parameters: [
             {
@@ -466,8 +470,8 @@ export default {
           operationId: "getAttractions",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           responses: {
             200: {
@@ -482,37 +486,56 @@ export default {
                   },
                 },
               },
-            }
+            },
           },
         },
       },
       "/touristAttraction/create": {
         post: {
           summary: "Cria um ponto turístico (admin)",
-          description: "Realiza a criação de um ponto turístico definido por ID",
+          description: "Realiza a criação de um ponto turístico",
           operationId: "addAttraction",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           requestBody: {
             content: {
-              "application/json": {
+              "multipart/form-data": {
                 schema: {
-                  $ref: "#/components/schemas/TouristAttraction",
-                },
-                examples: {
-                  touristAttraction: {
-                    summary: "Exemplo de ponto turístico",
-                    value: {
-                      name: "Ponto turístico X",
-                      address: "Rua Exemplo, n 001",
-                      openingHours: "Seg a sex -> 09hrs - 18hrs",
-                      typeOfAttraction: "TipoO1",
-                      description: "Esta é uma longa descrição exemplo de uma atração turística",
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string",
+                      example: "Ponto turístico X",
+                    },
+                    address: {
+                      type: "string",
+                      example: "Rua Exemplo, n 001",
+                    },
+                    openingHours: {
+                      type: "string",
+                      example: "Seg a sex -> 09hrs - 18hrs",
+                    },
+                    description: {
+                      type: "string",
+                      example:
+                        "Esta é uma longa descrição exemplo de uma atração turística",
+                    },
+                    image: {
+                      type: "string",
+                      format: "binary",
+                      description: "Arquivo de imagem (JPEG, PNG, etc.)",
                     },
                   },
+                  required: [
+                    "name",
+                    "address",
+                    "openingHours",
+                    "description",
+                    "image",
+                  ],
                 },
               },
             },
@@ -530,12 +553,13 @@ export default {
       "/touristAttraction/{id}/": {
         patch: {
           summary: "Atualiza um ponto turístico (admin)",
-          description: "Realiza uma atualização em um ponto turístico definido por ID",
+          description:
+            "Realiza uma atualização em um ponto turístico definido por ID",
           operationId: "updateAttraction",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           parameters: [
             {
@@ -562,7 +586,8 @@ export default {
                       address: "Rua Exemplo, n 001",
                       openingHours: "Seg a sex -> 09hrs - 18hrs",
                       typeOfAttraction: "TipoO1",
-                      description: "Esta é uma longa descrição exemplo de uma atração turística",
+                      description:
+                        "Esta é uma longa descrição exemplo de uma atração turística",
                     },
                   },
                 },
@@ -583,12 +608,13 @@ export default {
         },
         delete: {
           summary: "remove um ponto turístico (admin)",
-          description: "Realiza a remoção de um ponto turístico definido por ID",
+          description:
+            "Realiza a remoção de um ponto turístico definido por ID",
           operationId: "deleteAttraction",
           security: [
             {
-              bearerAuth: []
-            }
+              bearerAuth: [],
+            },
           ],
           parameters: [
             {
@@ -607,14 +633,15 @@ export default {
             },
             404: {
               description: "Atração Turística não encontrada",
-            }
+            },
           },
         },
       },
       "/reviews/{TouristAttractionId}": {
         post: {
           summary: "Cria uma nova avaliação",
-          description: "Cria uma nova avaliação para uma atração turística específica",
+          description:
+            "Cria uma nova avaliação para uma atração turística específica",
           operationId: "createReview",
           parameters: [
             {
@@ -715,7 +742,8 @@ export default {
       "/reviews/user": {
         get: {
           summary: "Obtém avaliações do usuário",
-          description: "Obtém todas as avaliações feitas pelo usuário autenticado",
+          description:
+            "Obtém todas as avaliações feitas pelo usuário autenticado",
           operationId: "getUserReviews",
           responses: {
             200: {
@@ -779,8 +807,8 @@ export default {
         bearerAuth: {
           type: "http",
           scheme: "bearer",
-          bearerFormat: "JWT"
-        }
+          bearerFormat: "JWT",
+        },
       },
       schemas: {
         TouristAttraction: {
@@ -788,25 +816,25 @@ export default {
           properties: {
             name: {
               type: "string",
-              description: "Nome da atração turística"
+              description: "Nome da atração turística",
             },
             address: {
-                type: "string",
-                description: "Endereço da atração turística"
+              type: "string",
+              description: "Endereço da atração turística",
             },
             openingHours: {
-                type: "string",
-                description: "Horário de funcionamento da atração turística"
+              type: "string",
+              description: "Horário de funcionamento da atração turística",
             },
             typeOfAttraction: {
-                type: "string",
-                description: "Tipo de atração turística"
+              type: "string",
+              description: "Tipo de atração turística",
             },
             description: {
-                type: "string",
-                description: "Descrição da atração turística"
-            }
-          }
+              type: "string",
+              description: "Descrição da atração turística",
+            },
+          },
         },
         User: {
           type: "object",
@@ -853,25 +881,25 @@ export default {
           },
         },
         Review: {
-            type: "object",
-            properties: {
-              userId: {
-                type: "string",
-                description: "ID do usuário que fez a avaliação",
-              },
-              TouristAttractionId: {
-                type: "string",
-                description: "ID da atração turística avaliada",
-              },
-              rating: {
-                type: "number",
-                description: "Classificação da atração turística",
-                minimum: 1,
-                maximum: 5,
-              },
+          type: "object",
+          properties: {
+            userId: {
+              type: "string",
+              description: "ID do usuário que fez a avaliação",
             },
-            required: ["userId", "TouristAttractionId", "rating"],
-          },        
+            TouristAttractionId: {
+              type: "string",
+              description: "ID da atração turística avaliada",
+            },
+            rating: {
+              type: "number",
+              description: "Classificação da atração turística",
+              minimum: 1,
+              maximum: 5,
+            },
+          },
+          required: ["userId", "TouristAttractionId", "rating"],
+        },
       },
     },
   },
