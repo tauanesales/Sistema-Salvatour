@@ -10,7 +10,6 @@ route.get('/:id', validId, validUser, userController.findById);
 route.patch('/', validToken, userController.updateLoggedUser);
 route.delete('/', validToken, userController.deleteUser);
 
-
 // route.get('/', validToken, userController.findAll);
 // route.get('/:id', validId, validUser, validToken, userController.findById);
 // route.patch("/:id", validId, validUser, validToken, userController.update);

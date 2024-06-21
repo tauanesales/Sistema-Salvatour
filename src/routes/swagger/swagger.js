@@ -611,6 +611,168 @@ export default {
           },
         },
       },
+      "/reviews/{TouristAttractionId}": {
+        post: {
+          summary: "Cria uma nova avaliação",
+          description: "Cria uma nova avaliação para uma atração turística específica",
+          operationId: "createReview",
+          parameters: [
+            {
+              name: "TouristAttractionId",
+              in: "path",
+              required: true,
+              description: "ID da atração turística",
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    rating: {
+                      type: "number",
+                      description: "Classificação da atração turística",
+                      minimum: 1,
+                      maximum: 5,
+                    },
+                  },
+                  required: ["rating"],
+                },
+                examples: {
+                  review: {
+                    summary: "Exemplo de avaliação",
+                    value: {
+                      rating: 4,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            201: {
+              description: "Avaliação criada com sucesso",
+              content: {
+                "application/json": {
+                  schema: {
+                    $ref: "#/components/schemas/Review",
+                  },
+                },
+              },
+            },
+            400: {
+              description: "Dados inválidos",
+            },
+          },
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
+        },
+      },
+      // "/reviews/tourist-attraction/{TouristAttractionId}": {
+      //   get: {
+      //     summary: "Obtém avaliações por atração turística",
+      //     description: "Obtém todas as avaliações para uma atração turística específica",
+      //     operationId: "getReviewsByTouristAttractionId",
+      //     parameters: [
+      //       {
+      //         name: "TouristAttractionId",
+      //         in: "path",
+      //         required: true,
+      //         description: "ID da atração turística",
+      //         schema: {
+      //           type: "string",
+      //         },
+      //       },
+      //     ],
+      //     responses: {
+      //       200: {
+      //         description: "Lista de avaliações",
+      //         content: {
+      //           "application/json": {
+      //             schema: {
+      //               type: "array",
+      //               items: {
+      //                 $ref: "#/components/schemas/Review",
+      //               },
+      //             },
+      //           },
+      //         },
+      //       },
+      //       404: {
+      //         description: "Avaliações não encontradas",
+      //       },
+      //     },
+      //   },
+      // },
+      "/reviews/user": {
+        get: {
+          summary: "Obtém avaliações do usuário",
+          description: "Obtém todas as avaliações feitas pelo usuário autenticado",
+          operationId: "getUserReviews",
+          responses: {
+            200: {
+              description: "Lista de avaliações do usuário",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "array",
+                    items: {
+                      $ref: "#/components/schemas/Review",
+                    },
+                  },
+                },
+              },
+            },
+            401: {
+              description: "Token não fornecido ou inválido",
+            },
+          },
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
+        },
+      },
+      "/reviews/{reviewId}": {
+        delete: {
+          summary: "Deleta uma avaliação",
+          description: "Deleta uma avaliação específica pelo ID",
+          operationId: "deleteReview",
+          parameters: [
+            {
+              name: "reviewId",
+              in: "path",
+              required: true,
+              description: "ID da avaliação",
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: "Avaliação deletada com sucesso",
+            },
+            404: {
+              description: "Avaliação não encontrada",
+            },
+          },
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
+        },
+      },
     },
     components: {
       securitySchemes: {
@@ -690,6 +852,26 @@ export default {
             },
           },
         },
+        Review: {
+            type: "object",
+            properties: {
+              userId: {
+                type: "string",
+                description: "ID do usuário que fez a avaliação",
+              },
+              TouristAttractionId: {
+                type: "string",
+                description: "ID da atração turística avaliada",
+              },
+              rating: {
+                type: "number",
+                description: "Classificação da atração turística",
+                minimum: 1,
+                maximum: 5,
+              },
+            },
+            required: ["userId", "TouristAttractionId", "rating"],
+          },        
       },
     },
   },
