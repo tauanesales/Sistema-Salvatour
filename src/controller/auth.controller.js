@@ -35,6 +35,7 @@ const authenticate = async (req, res) => {
 
     res.status(200).json({ token, isAdmin: user.isAdmin });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -86,6 +87,7 @@ const register = async (req, res) => {
       id: user._id,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -95,6 +97,7 @@ const sendMailController = async (req, res) => {
     sendMailService.sendMailService(req.user.email);
     return res.json({ message: "email sent successfully" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -111,6 +114,7 @@ const verifyToken = (req, res) => {
 
     return res.json({ message: "Token is valid" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -132,6 +136,7 @@ const modifyPassword = async (req, res) => {
     await userService.updatePasswordService(email, hashedPassword);
     return res.json({ message: "User successfully updated!" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

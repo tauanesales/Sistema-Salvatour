@@ -11,6 +11,7 @@ const findAll = async (req, res) => {
 
     res.json(users);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -40,6 +41,7 @@ const updateAdmin = async (req, res) => {
     );
     res.json({ message: "User successfully updated!" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -55,6 +57,7 @@ export const deleteUserById = async (req, res) => {
     const result = await adminService.deleteUserById(userId, userIdToDelete);
     res.status(200).json(result);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

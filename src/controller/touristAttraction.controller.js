@@ -8,6 +8,7 @@ const getAttractions = async (req, res) => {
 
     res.status(200).json(attractions);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -46,6 +47,7 @@ const addAttraction = async (req, res) => {
       id: attraction._id,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -94,6 +96,7 @@ const updateAttraction = async (req, res) => {
       res.status(204).json();
     }
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -116,6 +119,7 @@ const deleteAttraction = async (req, res) => {
       res.status(204).json();
     }
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
