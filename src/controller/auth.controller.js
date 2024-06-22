@@ -55,7 +55,7 @@ const register = async (req, res) => {
       isAdmin = req.body.isAdmin;
     }
 
-    const existingUser = await userService.findUserByEmail(email);
+    const existingUser = await userService.findByEmailService(email);
     if (existingUser) {
       return res.status(409).json({ error: "Email already registered." });
     }
