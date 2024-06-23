@@ -7,7 +7,7 @@ const getReviewsByTouristAttractionId = (touristAttractionId) =>
 
 const getUserReviews = (userId) => Review.find({ userId });
 
-const updateReview = (id, rating, comment) => 
+const updateReview = (id, rating) => 
   Review.findOneAndUpdate(
     { _id: id },
     { rating}
