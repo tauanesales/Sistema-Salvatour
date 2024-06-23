@@ -16,6 +16,11 @@ const createReview = async (req, res) => {
     const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
     const userId = decoded.id;
 
+    const existsAttraction = await touristAttractionService.findByID(touristAttractionId);
+    if (!existsAttraction) {
+      return res.status(404).json({ error: "Tourist attraction not found" });
+    }    
+
     const existsReview = await reviewService.getUserReviewForAttraction(userId, touristAttractionId);
     let review;
     if (existsReview) {
