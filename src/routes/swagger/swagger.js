@@ -553,12 +553,11 @@ export default {
       "/touristAttraction/{id}/": {
         patch: {
           summary: "Atualiza um ponto turístico (admin)",
-          description:
-            "Realiza uma atualização em um ponto turístico definido por ID",
+          description: "Realiza uma atualização em um ponto turístico definido por ID",
           operationId: "updateAttraction",
           security: [
             {
-              bearerAuth: [],
+              bearerAuth: []
             },
           ],
           parameters: [
@@ -568,27 +567,42 @@ export default {
               description: "ID da atração turística a ser alterada",
               required: true,
               schema: {
-                type: "string",
+                type: "string"
               },
             },
           ],
           requestBody: {
             content: {
-              "application/json": {
+              "multipart/form-data": {
                 schema: {
-                  $ref: "#/components/schemas/TouristAttraction",
-                },
-                examples: {
-                  touristAttraction: {
-                    summary: "Exemplo de ponto turístico",
-                    value: {
-                      name: "Ponto turístico X",
-                      address: "Rua Exemplo, n 001",
-                      openingHours: "Seg a sex -> 09hrs - 18hrs",
-                      typeOfAttraction: "TipoO1",
-                      description:
-                        "Esta é uma longa descrição exemplo de uma atração turística",
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string",
+                      example: "Ponto turístico X"
                     },
+                    address: {
+                      type: "string",
+                      example: "Rua Exemplo, n 001"
+                    },
+                    openingHours: {
+                      type: "string",
+                      example: "Seg a sex -> 09hrs - 18hrs"
+                    },
+                    description: {
+                      type: "string",
+                      example: "Esta é uma longa descrição exemplo de uma atração turística"
+                    },
+                    image: {
+                      type: "string",
+                      format: "binary"
+                    },
+                  },
+                  required: []
+                },
+                encoding: {
+                  image: {
+                    contentType: "image/png, image/jpeg"
                   },
                 },
               },
@@ -596,17 +610,18 @@ export default {
           },
           responses: {
             204: {
-              description: "Atração Turística atualizada com sucesso",
+              description: "Atração Turística atualizada com sucesso"
             },
             404: {
-              description: "Atração Turística não encontrada",
+              description: "Atração Turística não encontrada"
             },
             400: {
-              description: "Campos obrigatórios em falta",
+              description: "Campos obrigatórios em falta"
             },
           },
         },
-        delete: {
+      },
+      delete: {
           summary: "remove um ponto turístico (admin)",
           description:
             "Realiza a remoção de um ponto turístico definido por ID",
@@ -636,7 +651,6 @@ export default {
             },
           },
         },
-      },
       "/reviews/{TouristAttractionId}": {
         post: {
           summary: "Cria uma nova avaliação",
