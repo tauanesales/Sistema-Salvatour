@@ -7,6 +7,11 @@ const getReviewsByTouristAttractionId = (touristAttractionId) =>
 
 const getUserReviews = (userId) => Review.find({ userId });
 
+const updateReview = (id, rating, comment) => 
+  Review.findOneAndUpdate(
+    { _id: id },
+    { rating}
+  );
 const deleteReview = (reviewId) => Review.findByIdAndDelete(reviewId);
 
 export default {
@@ -14,4 +19,5 @@ export default {
   getReviewsByTouristAttractionId,
   getUserReviews,
   deleteReview,
+  updateReview,
 };
