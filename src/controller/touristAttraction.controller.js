@@ -1,6 +1,6 @@
 import touristAttractionService from "../services/touristAttraction.service.js";
 import fs from "fs";
-import { imageToBase64 } from '../utils/imageUtils.js';
+import { imageToBase64 } from "../utils/imageUtils.js";
 
 const getAttractions = async (req, res) => {
   try {
@@ -16,12 +16,7 @@ const getAttractions = async (req, res) => {
 
 const addAttraction = async (req, res) => {
   try {
-    const requiredFields = [
-      "name",
-      "address",
-      "openingHours",
-      "description",
-    ];
+    const requiredFields = ["name", "address", "openingHours", "description"];
 
     for (const field of requiredFields) {
       if (!req.body[field]) {
@@ -30,7 +25,7 @@ const addAttraction = async (req, res) => {
     }
 
     if (!req.file) {
-      return res.status(400).json({ error: 'Please upload an image' });
+      return res.status(400).json({ error: "Please upload an image" });
     }
 
     const { name, address, openingHours, description } = req.body;
@@ -43,7 +38,7 @@ const addAttraction = async (req, res) => {
       address,
       openingHours,
       description,
-      image: base64Data
+      image: base64Data,
     });
 
     res.status(201).json({
@@ -51,10 +46,11 @@ const addAttraction = async (req, res) => {
       id: attraction._id,
     });
   } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error", details: error.message });
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
   }
 };
-
 
 const updateAttraction = async (req, res) => {
   try {
@@ -66,32 +62,36 @@ const updateAttraction = async (req, res) => {
         .json({ error: `Please add the attraction id as a request param` });
     }
 
-    const requiredFields = [
-      "name",
-      "address",
-      "openingHours",
-      "typeOfAttraction",
-      "description",
-    ];
+    const requiredFields = ["name", "address", "openingHours", "description"];
 
     for (const field of requiredFields) {
-      if (!req.body[field]) {
-        return res.status(400).json({ error: `Please add the field ${field}` });
+      if (!req.body[field] && !req.file) {
+        return res
+          .status(400)
+          .json({ error: `Please add the field ${field} or upload an image` });
       }
     }
 
-    const { name, address, openingHours, typeOfAttraction, description } =
-      req.body;
+    const { name, address, openingHours, description } = req.body;
+    let base64Data;
+
+    if (req.file) {
+      base64Data = imageToBase64(req.file.path);
+      fs.unlinkSync(req.file.path);
+    }
 
     //TODO: criar middleware que pega o id do usuário e testa se é admin
 
+    const updatedData = {};
+    if (name) updatedData.name = name;
+    if (address) updatedData.address = address;
+    if (openingHours) updatedData.openingHours = openingHours;
+    if (description) updatedData.description = description;
+    if (base64Data) updatedData.image = base64Data;
+
     const result = await touristAttractionService.updateService(
       id,
-      name,
-      address,
-      openingHours,
-      typeOfAttraction,
-      description
+      updatedData
     );
 
     if (!result) {
