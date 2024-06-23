@@ -5,3 +5,7 @@ export function imageToBase64(imagePath) {
   return imgData.toString('base64');
 }
 
+export function base64ToImage(base64String, outputPath) {
+  const imgData = Buffer.from(base64String, 'base64');
+  fs.writeFileSync(outputPath, imgData);
+}
