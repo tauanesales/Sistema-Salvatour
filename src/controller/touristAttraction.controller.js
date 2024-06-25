@@ -128,7 +128,7 @@ const updateAttraction = async (req, res) => {
     if (!result) {
       res.status(404).json({ message: "Tourist Attraction not found" });
     } else {
-      res.status(204).json();
+      res.status(204).json({message: "Tourist Attraction update successfully"});
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
