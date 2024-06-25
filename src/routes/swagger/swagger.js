@@ -679,7 +679,7 @@ export default {
             },
           },
           responses: {
-            20: {
+            204: {
               description: "Atração Turística atualizada com sucesso",
             },
             404: {

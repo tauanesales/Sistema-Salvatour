@@ -100,8 +100,10 @@ const updateAttraction = async (req, res) => {
         return res
           .status(400)
           .json({ error: `Please add the field ${field} or upload an image` });
+      }else{
+        break;
       }
-    }
+    }    
 
     const { name, address, openingHours, description } = req.body;
     let base64Data;
