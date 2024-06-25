@@ -558,6 +558,41 @@ export default {
           },
         },
       },
+      "/touristAttraction/{id}": {
+        delete: {
+          summary: "Deleta uma atração turística",
+          description:
+            "Remove a atração turística correspondente ao ID fornecido",
+          operationId: "deleteTouristAttraction",
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              description: "ID da atração turística",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          responses: {
+            204: {
+              description: "Atração turística deletada com sucesso",
+            },
+            404: {
+              description: "Atração turística não encontrada",
+            },
+            500: {
+              description: "Erro interno do servidor. Contate o administrador.",
+            },
+          },
+        },
+      },
       "/touristAttraction/create": {
         post: {
           summary: "Cria um ponto turístico (admin)",
