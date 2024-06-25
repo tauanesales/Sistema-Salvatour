@@ -12,15 +12,12 @@ export const validToken = (req, res, next) => {
 
     jwt.verify(token, process.env.SECRET_JWT_KEY, (err, decoded) => {
       if (err) {
-        console.error("JWT verify error:", err);
         return res.status(403).json({ message: "Invalid token" });
       }
-
       req.usuario = decoded;
       next();
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
