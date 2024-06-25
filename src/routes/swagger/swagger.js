@@ -466,7 +466,8 @@ export default {
       "/touristAttraction/all": {
         get: {
           summary: "Busca todos os pontos turísticos (admin)",
-          description: "Retorna uma lista de todos os pontos turísticos",
+          description:
+            "Retorna uma lista de todos os pontos turísticos cadastrados no sistema, incluindo informações sobre a imagem de cada atração, se disponível.",
           operationId: "getAttractions",
           security: [
             {
@@ -475,7 +476,8 @@ export default {
           ],
           responses: {
             200: {
-              description: "Lista de atrações turísticas",
+              description:
+                "Lista de atrações turísticas retornada com sucesso.",
               content: {
                 "application/json": {
                   schema: {
@@ -484,8 +486,74 @@ export default {
                       $ref: "#/components/schemas/TouristAttraction",
                     },
                   },
+                  example: [
+                    {
+                      name: "Ponto turístico A",
+                      address: "Rua A, nº 123",
+                      openingHours: "09:00 - 18:00",
+                      description: "Descrição do Ponto Turístico A",
+                      image: "/image/ponto_turistico_a.jpg",
+                    },
+                    {
+                      name: "Ponto turístico B",
+                      address: "Av. B, nº 456",
+                      openingHours: "10:00 - 17:00",
+                      description: "Descrição do Ponto Turístico B",
+                      image: "/image/ponto_turistico_b.jpg",
+                    },
+                  ],
                 },
               },
+            },
+            401: {
+              description:
+                "Não autorizado. Token de autenticação inválido ou ausente.",
+            },
+            500: {
+              description: "Erro interno do servidor. Contate o administrador.",
+            },
+          },
+        },
+      },
+      "/touristAttraction/image/{id}": {
+        get: {
+          summary: "Obtém a imagem de uma atração turística",
+          description:
+            "Retorna a imagem correspondente ao ID da atração turística",
+          operationId: "getImage",
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              description: "ID da atração turística",
+              required: true,
+              schema: {
+                type: "string",
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: "Imagem encontrada e retornada com sucesso",
+              content: {
+                "image/jpeg": {
+                  schema: {
+                    type: "string",
+                    format: "binary",
+                  },
+                },
+              },
+            },
+            401: {
+              description: "Imagem não encontrada",
+            },
+            500: {
+              description: "Erro interno do servidor. Contate o administrador.",
             },
           },
         },
@@ -553,11 +621,12 @@ export default {
       "/touristAttraction/{id}/": {
         patch: {
           summary: "Atualiza um ponto turístico (admin)",
-          description: "Realiza uma atualização em um ponto turístico definido por ID",
+          description:
+            "Realiza uma atualização em um ponto turístico definido por ID",
           operationId: "updateAttraction",
           security: [
             {
-              bearerAuth: []
+              bearerAuth: [],
             },
           ],
           parameters: [
@@ -567,7 +636,7 @@ export default {
               description: "ID da atração turística a ser alterada",
               required: true,
               schema: {
-                type: "string"
+                type: "string",
               },
             },
           ],
@@ -579,78 +648,78 @@ export default {
                   properties: {
                     name: {
                       type: "string",
-                      example: "Ponto turístico X"
+                      example: "Ponto turístico X",
                     },
                     address: {
                       type: "string",
-                      example: "Rua Exemplo, n 001"
+                      example: "Rua Exemplo, n 001",
                     },
                     openingHours: {
                       type: "string",
-                      example: "Seg a sex -> 09hrs - 18hrs"
+                      example: "Seg a sex -> 09hrs - 18hrs",
                     },
                     description: {
                       type: "string",
-                      example: "Esta é uma longa descrição exemplo de uma atração turística"
+                      example:
+                        "Esta é uma longa descrição exemplo de uma atração turística",
                     },
                     image: {
                       type: "string",
-                      format: "binary"
+                      format: "binary",
                     },
                   },
-                  required: []
+                  required: [],
                 },
                 encoding: {
                   image: {
-                    contentType: "image/png, image/jpeg"
+                    contentType: "image/png, image/jpeg",
                   },
                 },
               },
             },
           },
           responses: {
-            204: {
-              description: "Atração Turística atualizada com sucesso"
+            20: {
+              description: "Atração Turística atualizada com sucesso",
             },
             404: {
-              description: "Atração Turística não encontrada"
+              description: "Atração Turística não encontrada",
             },
             400: {
-              description: "Campos obrigatórios em falta"
+              description: "Campos obrigatórios em falta",
             },
           },
         },
       },
       delete: {
-          summary: "remove um ponto turístico (admin)",
-          description:
-            "Realiza a remoção de um ponto turístico definido por ID",
-          operationId: "deleteAttraction",
-          security: [
-            {
-              bearerAuth: [],
-            },
-          ],
-          parameters: [
-            {
-              name: "id",
-              in: "path",
-              description: "ID do ponto turístico a ser removido",
-              required: true,
-              schema: {
-                type: "string",
-              },
-            },
-          ],
-          responses: {
-            204: {
-              description: "Atração Turística removida com sucesso",
-            },
-            404: {
-              description: "Atração Turística não encontrada",
+        summary: "remove um ponto turístico (admin)",
+        description: "Realiza a remoção de um ponto turístico definido por ID",
+        operationId: "deleteAttraction",
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            description: "ID do ponto turístico a ser removido",
+            required: true,
+            schema: {
+              type: "string",
             },
           },
+        ],
+        responses: {
+          204: {
+            description: "Atração Turística removida com sucesso",
+          },
+          404: {
+            description: "Atração Turística não encontrada",
+          },
         },
+      },
       "/reviews/{TouristAttractionId}": {
         post: {
           summary: "Cria uma nova avaliação",
