@@ -4,6 +4,8 @@ const createService = (body) => TouristAttraction.create(body);
 
 const findAllService = () => TouristAttraction.find();
 
+const findByIdService = (id) => TouristAttraction.findOne({ _id: id });
+
 const deleteService = (id) => TouristAttraction.findByIdAndDelete(id);
 
 const updateService = (id, updateData) =>
@@ -17,4 +19,5 @@ export default {
   findAllService,
   deleteService,
   updateService,
+  findByIdService
 };
