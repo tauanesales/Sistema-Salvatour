@@ -1,11 +1,10 @@
 import reviewService from "../services/review.service.js";
 import jwt from'jsonwebtoken';
-import bcrypt from 'bcrypt';
 
 const createReview = async (req, res) => {
   try {
     const {rating} = req.body; 
-    const {TouristAttractionId} = req.params;
+    const {touristAttractionId} = req.params;
 
     if (!rating) {
       return res.status(400).json({ error: "Please provide rating" });
@@ -16,7 +15,7 @@ const createReview = async (req, res) => {
     const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
     const userId = decoded.id;
 
-    const reviewData = { userId, TouristAttractionId, rating };
+    const reviewData = { userId, touristAttractionId, rating };
     const review = await reviewService.createReview(reviewData);
 
     res.status(201).json(review);
