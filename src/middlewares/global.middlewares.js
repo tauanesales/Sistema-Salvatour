@@ -10,6 +10,7 @@ export const validId = (req, res, next) => {
     }
     next();
   } catch (error) {
+    console.log(error)
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -28,6 +29,7 @@ export const validUser = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log(error)
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -43,6 +45,7 @@ export const validEmail = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    console.log(error)
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }

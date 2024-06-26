@@ -4,9 +4,9 @@ import { imageToBase64 } from "../utils/imageUtils.js";
 
 const getAttractions = async (req, res) => {
   try {
-    let attractions = await touristAttractionService.findAllService(); 
-    const serverUrl = req.protocol + '://' + req.get('host');
-    attractions = attractions.map(attraction => {
+    let attractions = await touristAttractionService.findAllService();
+    const serverUrl = req.protocol + "://" + req.get("host");
+    attractions = attractions.map((attraction) => {
       if (attraction.image) {
         attraction.image = `${serverUrl}/touristAttraction/image/${attraction._id}`;
       }
@@ -18,7 +18,6 @@ const getAttractions = async (req, res) => {
 
     res.status(200).json(attractions);
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -27,17 +26,17 @@ const getImage = async (req, res) => {
   try {
     const id = req.params.id;
     const attraction = await touristAttractionService.findByIdService(id);
-    
+
     if (!attraction || !attraction.image) {
       return res.status(404).json({ error: "Image not found" });
     }
 
     const base64Data = attraction.image;
-    const imgBuffer = Buffer.from(base64Data, 'base64');
+    const imgBuffer = Buffer.from(base64Data, "base64");
 
     res.writeHead(200, {
-      'Content-Type': 'image/jpeg',
-      'Content-Length': imgBuffer.length
+      "Content-Type": "image/jpeg",
+      "Content-Length": imgBuffer.length,
     });
     res.end(imgBuffer);
   } catch (error) {
@@ -100,10 +99,10 @@ const updateAttraction = async (req, res) => {
         return res
           .status(400)
           .json({ error: `Please add the field ${field} or upload an image` });
-      }else{
+      } else {
         break;
       }
-    }    
+    }
 
     const { name, address, openingHours, description } = req.body;
     let base64Data;
@@ -130,9 +129,12 @@ const updateAttraction = async (req, res) => {
     if (!result) {
       res.status(404).json({ message: "Tourist Attraction not found" });
     } else {
-      res.status(204).json({message: "Tourist Attraction update successfully"});
+      res
+        .status(204)
+        .json({ message: "Tourist Attraction update successfully" });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -152,9 +154,10 @@ const deleteAttraction = async (req, res) => {
     if (!result) {
       res.status(404).json({ error: "Tourist Attraction not found" });
     } else {
-      res.status(204).json({menssage: "Attraction succesfully deleted"});
+      res.status(204).json({ menssage: "Attraction succesfully deleted" });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -164,5 +167,5 @@ export default {
   addAttraction,
   deleteAttraction,
   updateAttraction,
-  getImage
+  getImage,
 };

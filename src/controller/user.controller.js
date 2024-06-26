@@ -8,6 +8,7 @@ const findById = async (req, res) => {
     const user = await userService.findByIdService(id);
     res.status(200).json(user);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -41,6 +42,7 @@ const updateLoggedUser = async (req, res) => {
     );
     res.json({ message: "User successfully updated!" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -55,6 +57,7 @@ const deleteUser = async (req, res) => {
     const result = await userService.deleteUser(userId);
     res.status(200).json(result);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -68,6 +71,7 @@ const findByToken = async (req, res) => {
     const user = await userService.findByIdService(userId);
     res.status(200).json(user);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

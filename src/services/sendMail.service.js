@@ -46,6 +46,7 @@ const sendMailService = async (email) => {
     const response = await mailersend.email.send(emailParams);
     console.log("Email enviado com sucesso", response);
   } catch (error) {
+    console.log(error)
     console.error("Erro ao enviar email: ", error);
   }
 };

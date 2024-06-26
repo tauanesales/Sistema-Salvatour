@@ -18,7 +18,8 @@ const deleteUserById = async (requestingUserId, userIdToDelete) => {
 
     return { message: "User deleted successfully" };
   } catch (error) {
-    throw new Error(`Error deleting the user. : ${error.message}`);
+    console.log(error)
+    throw new Error(`Error deleting the user.`);
   }
 };
 

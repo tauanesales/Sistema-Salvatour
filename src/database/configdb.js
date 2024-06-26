@@ -15,7 +15,7 @@ const connect = async () => {
     );
     console.log("Banco conectado com sucesso!");
   } catch (error) {
-    console.log("Error: ", error.message);
+    console.log(error)
   }
 };
 
