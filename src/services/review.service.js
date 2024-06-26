@@ -2,8 +2,18 @@ import Review from "../models/Review.js";
 
 const createReview = (reviewData) => Review.create(reviewData);
 
-const getReviewsByTouristAttractionId = (TouristAttractionId) =>
-  Review.find({ TouristAttractionId });
+const getReviewsByTouristAttractionId = (touristAttractionId) =>
+  Review.find({ touristAttractionId });
+
+const updateReview = (id, rating) => 
+  Review.findOneAndUpdate(
+    { _id: id },
+    { rating},
+    { new: true }
+  );
+
+const getUserReviewForAttraction = (userId, touristAttractionId) => 
+    Review.findOne({ userId, touristAttractionId });
 
 const getUserReviews = (userId) => Review.find({ userId });
 
@@ -14,4 +24,6 @@ export default {
   getReviewsByTouristAttractionId,
   getUserReviews,
   deleteReview,
+  updateReview,
+  getUserReviewForAttraction,
 };

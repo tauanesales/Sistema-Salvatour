@@ -1,11 +1,10 @@
 import reviewService from "../services/review.service.js";
 import jwt from'jsonwebtoken';
-import bcrypt from 'bcrypt';
 
 const createReview = async (req, res) => {
   try {
     const {rating} = req.body; 
-    const {TouristAttractionId} = req.params;
+    const {touristAttractionId} = req.params;
 
     if (!rating) {
       return res.status(400).json({ error: "Please provide rating" });
@@ -16,12 +15,18 @@ const createReview = async (req, res) => {
     const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
     const userId = decoded.id;
 
-    const reviewData = { userId, TouristAttractionId, rating };
-    const review = await reviewService.createReview(reviewData);
+    const existsReview = await reviewService.getUserReviewForAttraction(userId, touristAttractionId);
+    let review;
+    if (existsReview) {
+      review = await reviewService.updateReview(existsReview._id, { rating });  
+    } else {
+
+       const reviewData = { userId, touristAttractionId, rating };
+       review = await reviewService.createReview(reviewData);}
 
     res.status(201).json(review);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
