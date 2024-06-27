@@ -4,7 +4,7 @@ import { validToken } from "../middlewares/jwt.token.middleware.js";
 
 const route = express.Router();
 
-route.post('/:TouristAttractionId', validToken, reviewController.createReview);
+route.post('/:touristAttractionId', validToken, reviewController.createReview);
 
 route.get('/user', validToken, reviewController.getUserReviews);
 
