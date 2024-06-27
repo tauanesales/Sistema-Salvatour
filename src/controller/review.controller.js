@@ -18,7 +18,7 @@ const createReview = async (req, res) => {
     const existsReview = await reviewService.getUserReviewForAttraction(userId, touristAttractionId);
     let review;
     if (existsReview) {
-      review = await reviewService.updateReview(existsReview._id, { rating });  
+      review = await reviewService.updateReview(existsReview._id, rating );  
     } else {
 
        const reviewData = { userId, touristAttractionId, rating };
