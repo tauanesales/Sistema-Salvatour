@@ -1,6 +1,4 @@
 import touristAttractionService from "../services/touristAttraction.service.js";
-import fs from "fs";
-import { imageToBase64 } from "../utils/imageUtils.js";
 
 const getAttractions = async (req, res) => {
   try {
