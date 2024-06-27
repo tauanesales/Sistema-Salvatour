@@ -1,6 +1,4 @@
 import touristAttractionService from "../services/touristAttraction.service.js";
-import fs from "fs";
-import { imageToBase64 } from "../utils/imageUtils.js";
 
 const getAttractions = async (req, res) => {
   try {
@@ -60,8 +58,7 @@ const addAttraction = async (req, res) => {
 
     const { name, address, openingHours, description } = req.body;
 
-    const base64Data = imageToBase64(req.file.path);
-    fs.unlinkSync(req.file.path);
+    const base64Data = req.file.buffer.toString('base64');
 
     const attraction = await touristAttractionService.createService({
       name,
@@ -108,8 +105,7 @@ const updateAttraction = async (req, res) => {
     let base64Data;
 
     if (req.file) {
-      base64Data = imageToBase64(req.file.path);
-      fs.unlinkSync(req.file.path);
+      base64Data = req.file.buffer.toString('base64');
     }
 
     //TODO: criar middleware que pega o id do usuário e testa se é admin
