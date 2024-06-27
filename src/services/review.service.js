@@ -8,7 +8,7 @@ const getReviewsByTouristAttractionId = (touristAttractionId) =>
 const updateReview = (id, rating) => 
   Review.findOneAndUpdate(
     { _id: id },
-    { rating},
+    { $set: { rating } },
     { new: true }
   );
 
