@@ -1,5 +1,5 @@
 import reviewService from "../services/review.service.js";
-import {findByIdService} from "../services/touristAttraction.service.js";
+import touristAttraction from "../services/touristAttraction.service.js";
 
 import jwt from'jsonwebtoken';
 
@@ -7,7 +7,7 @@ const createReview = async (req, res) => {
   try {
     const {rating} = req.body; 
     const {touristAttractionId} = req.params;
-    const attractionValid = await findByIdService(touristAttractionId);
+    const attractionValid = await touristAttraction.findByIdService(touristAttractionId);
     
     if(!attractionValid){
       return res.status(404).json({ error: "touristAttractionId not found" });
