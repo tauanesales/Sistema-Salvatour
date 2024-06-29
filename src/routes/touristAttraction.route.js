@@ -9,6 +9,7 @@ import multer from 'multer';
 const app = express();
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
+
 app.use(cors());
 
 const route = express.Router();

@@ -106,7 +106,6 @@ const updateAttraction = async (req, res) => {
 
     if (req.file) {
       base64Data = req.file.buffer.toString('base64');
-
     }
 
     //TODO: criar middleware que pega o id do usuário e testa se é admin
