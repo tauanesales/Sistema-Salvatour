@@ -810,6 +810,9 @@ export default {
                 },
               },
             },
+            404: {
+              description: "Atração turística não encontrada.",
+            },
             400: {
               description: "Dados inválidos",
             },
